@@ -2,7 +2,7 @@ FROM elixir
 
 RUN mix local.hex --force && mix local.rebar --force && mix hex.info
 
-RUN apt-get update -y && apt-get install curl -y
+RUN apt-get update -y && apt-get install -y curl vim
 
 WORKDIR /elixir_plug_poc
 
@@ -17,5 +17,7 @@ COPY . .
 RUN mix test
 
 ENV MIX_ENV=dev
+
+RUN mix compile
 
 CMD ["/bin/bash"]

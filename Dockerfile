@@ -1,5 +1,9 @@
 FROM elixir
 
+MAINTAINER admin@binarytemple.co.uk
+
+EXPOSE 4000
+
 RUN mix local.hex --force && mix local.rebar --force && mix hex.info
 
 RUN apt-get update -y && apt-get install -y curl vim

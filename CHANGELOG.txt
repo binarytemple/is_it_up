@@ -1,3 +1,4 @@
 0.0.1_no_auto_startup 
 Cowboy must be started manually with HelloWorldPlug as argument from `iex -S mix` i.e `Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})`
-
+0.0.2_with_auto_startup
+Cowboy now starts automatically and runs HelloWorldPlug 

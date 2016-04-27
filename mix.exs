@@ -16,7 +16,7 @@ defmodule ElixirPlugPoc.Mixfile do
   def application do
     [ 
       mod: {HelloWorld, []},
-      applications: [:logger]
+      applications: [:logger,:httpoison]
     ]
   end
 
@@ -24,7 +24,8 @@ defmodule ElixirPlugPoc.Mixfile do
   defp deps do
     [
       {:plug, "~> 1.0"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:httpoison, "~> 0.8.3"}
     ]
   end
 end

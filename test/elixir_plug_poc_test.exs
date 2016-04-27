@@ -14,7 +14,7 @@ defmodule HelloWorldPlugTest do
 
     assert conn.state == :sent
     assert conn.status == 200
-    assert conn.resp_body == "Hello, World!"
+    assert conn.resp_body =~ "Hello, World!"
   end
 
   test "returns 'Hello, Torben!'" do

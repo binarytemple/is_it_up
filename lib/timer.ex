@@ -1,8 +1,10 @@
 defmodule HelloWorld.Timer do
   use GenServer
+  use Timex
 
   @time_30_sec "30 * 1000"
   @time_10_sec "10 * 1000"
+  @server "binarytemple.co.uk"
 
   def start_link do
     GenServer.start_link(__MODULE__, %{}, [name: __MODULE__])
@@ -33,12 +35,15 @@ defmodule HelloWorld.Timer do
     # Start the timer again
     Process.send_after(self(), :work, eval(@time_30_sec))
 
-    status = case HTTPoison.head! "http://binarytemple.co.uk" do
+    status = case HTTPoison.head! "http://#{@server}" do
       %{status_code: 200 } -> :up
       _ -> :bad_status
     end
 
-    IO.puts "Checked server status - #{inspect  :calendar.now_to_datetime(:erlang.timestamp) } - status is #{status}"
+    datetime = DateTime.today
+    {:ok, date_string} = Timex.format(datetime, "{ISO:Extended}")
+
+    IO.puts "Checked server status - #{ date_string } - #{@server}  is #{status}"
 
     {:noreply, Map.put(state, :status, status) }
   end

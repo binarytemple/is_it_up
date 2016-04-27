@@ -26,7 +26,14 @@ defmodule HelloWorldPlug do
   end
 
   def call(%Plug.Conn{request_path: "/" } = conn, opts) do
-    send_resp(conn, 200, "#{opts[:my_prefix]}, World!")
+    available_routes = """
+                       #{opts[:my_prefix]}, World!
+                       /          - this message
+                       /crash     - throw an exception, crash the plug process
+                       /bt_status - check the status of binarytemple.co.uk
+                       / <> name  - display a greeting followed by the specified name
+                      """
+    send_resp(conn, 200, "#{available_routes}")
   end
 
   def call(%Plug.Conn{request_path: "/crash" } = conn, opts) do
@@ -35,9 +42,9 @@ defmodule HelloWorldPlug do
 
   def call(%Plug.Conn{request_path: "/bt_status" } = conn, opts) do
     case HelloWorld.Timer.is_it_up do
-      {:ok, :up} -> send_resp(conn, 200, "binarytemple.co.uk server good status" )
-      {:ok, :bad_status} -> send_resp(conn, 200, "binarytemple.co.uk bad status")
-      _ ->  send_resp(conn, 200, "binarytemple.co.uk unknown status")
+      {:ok, :up} -> send_resp(conn, 200, "binarytemple.co.uk - status - good" )
+      {:ok, :bad_status} -> send_resp(conn, 200, "binarytemple.co.uk - status - bad")
+      _ ->  send_resp(conn, 200, "binarytemple.co.uk - status - unknown")
     end
   end
 

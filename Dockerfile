@@ -2,7 +2,7 @@ FROM elixir
 
 MAINTAINER admin@binarytemple.co.uk
 
-EXPOSE 4000
+ENV PORT 4000
 
 RUN mix local.hex --force && mix local.rebar --force 
 
@@ -20,8 +20,10 @@ COPY . .
 
 RUN mix test
 
-ENV MIX_ENV=dev
+ENV MIX_ENV=prod
 
-RUN mix compile
+RUN mix do compile, release
 
-CMD ["/bin/bash"]
+EXPOSE $PORT
+
+CMD trap exit TERM; /elixir_plug_poc/rel/elixir_plug_poc/bin/elixir_plug_poc foreground & wait

@@ -8,6 +8,18 @@ This first version can be run by executing the following from an console launche
 Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})
 ```
 
+## Running under docker (downloading from docker hub)
+
+```
+docker run -p 4000:4000 binarytemple/elixir_plug_poc:<version>
+```
+
+## Running under docker (build it locally)
+
+```
+docker build -t whatever .
+docker run whatever
+```
 
 ## Installation
 

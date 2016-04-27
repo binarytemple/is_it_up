@@ -7,3 +7,4 @@ deps
 .dockerignore
 codeship*
 dockercfg.encrypted
+rel

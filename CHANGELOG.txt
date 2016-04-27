@@ -1,4 +1,13 @@
-0.0.1_no_auto_startup 
-Cowboy must be started manually with HelloWorldPlug as argument from `iex -S mix` i.e `Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})`
+0.0.4_with_host_monitoring
+Monitors a remote host via HTTP calls - implemented supervision of the HelloWorld.Watcher process
+
 0.0.2_with_auto_startup
 Cowboy now starts automatically and runs HelloWorldPlug 
+
+0.0.1_no_auto_startup 
+Cowboy must be started manually with HelloWorldPlug as argument from `iex -S mix` i.e `Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})`
+
+
+
+
+

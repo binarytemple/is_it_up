@@ -1,3 +1,11 @@
+defmodule HelloWorld do
+  use Application
+
+  def start(_type, _args) do
+      Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})
+  end
+end
+
 defmodule HelloWorldPlug do
 
   import Plug.Conn

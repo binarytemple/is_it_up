@@ -1,0 +1,9 @@
+.git
+.gitignore
+Dockerfile
+_build
+rel
+deps
+.dockerignore
+codeship*
+dockercfg.encrypted

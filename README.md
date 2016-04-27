@@ -2,6 +2,13 @@
 
 Trivial example project to demonstrate the use of [Elixir Plug module](https://github.com/elixir-lang/plug).
 
+This first version can be run by executing the following from an console launched with `iex -S mix`:
+
+```
+Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})
+```
+
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:

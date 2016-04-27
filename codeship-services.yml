@@ -1,0 +1,5 @@
+app:
+  build:
+    image: binarytemple/elixir_plug_poc
+    dockerfile_path: Dockerfile
+  environment:

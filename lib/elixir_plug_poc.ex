@@ -3,7 +3,7 @@ defmodule HelloWorld do
 
   def start(_type, _args) do
       # The Cowboy has it's own supervision tree.. no need for supervisor
-      Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})
+      Plug.Adapters.Cowboy.http(HelloWorldPipeline , %{})
 
       # Import helpers for defining supervisors
       import Supervisor.Spec
@@ -49,7 +49,23 @@ defmodule HelloWorldPlug do
   end
 
   def call(%Plug.Conn{request_path: "/" <> name} = conn, opts) do
-    send_resp(conn, 200, "Hello, #{name}!")
+      greeting = "Hello, #{name}!" 
+      conn |> 
+      update_resp_header("x-greeting", greeting, &(&1)) |> 
+      send_resp(200, greeting) 
   end
+
+end
+
+defmodule HelloWorldPipeline do
+   
+  # We use Plug.Builder to have access to the plug/2 macro.
+  # This macro can receive a function or a module plug and an
+  # optional parameter that will be passed unchanged to the 
+  # given plug.
+  use Plug.Builder
+
+  plug Plug.Logger
+  plug HelloWorldPlug, %{}
 
 end

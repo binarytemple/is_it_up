@@ -3,6 +3,7 @@ defmodule HelloWorld.Timer do
   use Timex
 
   @time_30_sec "30 * 1000"
+  @time_15_sec "15 * 1000"
   @time_10_sec "10 * 1000"
   @server "binarytemple.co.uk"
 
@@ -33,7 +34,7 @@ defmodule HelloWorld.Timer do
 
   def handle_info(:work, state) do
     # Start the timer again
-    Process.send_after(self(), :work, eval(@time_30_sec))
+    Process.send_after(self(), :work, eval(@time_15_sec))
 
     status = case HTTPoison.head! "http://#{@server}" do
       %{status_code: 200 } -> :up

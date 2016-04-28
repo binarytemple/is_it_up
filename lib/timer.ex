@@ -11,7 +11,7 @@ defmodule HelloWorld.Timer do
   end
 
   defp eval(time) do
-    List.first Tuple.to_list Code.eval_string(time)
+    Code.eval_string(time) |> Tuple.to_list  |> List.first
   end
 
   def init(state) do

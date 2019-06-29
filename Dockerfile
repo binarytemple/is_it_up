@@ -20,12 +20,12 @@ COPY . .
 
 RUN mix test
 
-ENV MIX_ENV=prod
-
-RUN mix deps.get 
-RUN mix compile 
-RUN mix distillery.release 
+RUN MIX_ENV=prod mix do deps.get, compile, distillery.release
 
 EXPOSE $PORT
 
-CMD /elixir_plug_poc/_build/prod/rel/elixir_plug_poc/bin/elixir_plug_poc foreground
+ENV REPLACE_OS_VARS=true
+
+ENTRYPOINT ["/elixir_plug_poc/_build/prod/rel/elixir_plug_poc/bin/elixir_plug_poc"]
+
+CMD ["foreground"]

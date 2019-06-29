@@ -5,4 +5,4 @@ before_install:
   - docker pull bitwalker/alpine-elixir:latest
 
 script:
-  - docker build
+  - docker build .

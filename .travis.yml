@@ -6,3 +6,4 @@ before_install:
 
 script:
   - docker build .
+  - docker run -t -p 4000:4000 --rm bitwalker/alpine-elixir:latest help

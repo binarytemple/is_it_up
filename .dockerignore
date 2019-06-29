@@ -8,9 +8,6 @@ Makefile
 README.md
 _build
 codeship*
-codeship-services.yml
-codeship-steps.yml
 deps
-dockercfg.encrypted
 erl_crash.dump
 tags

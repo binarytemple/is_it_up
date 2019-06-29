@@ -16,8 +16,6 @@ ENV MIX_ENV=test
 
 RUN mix do hex.info, deps.get
 
-COPY . . 
-
 RUN mix test
 
 RUN MIX_ENV=prod mix do deps.get, compile, distillery.release

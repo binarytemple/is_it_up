@@ -1,4 +1,4 @@
-FROM elixir
+FROM bitwalker/alpine-elixir:latest
 
 MAINTAINER admin@binarytemple.co.uk
 
@@ -6,15 +6,15 @@ ENV PORT 4000
 
 RUN mix local.hex --force && mix local.rebar --force 
 
-RUN apt-get update -y && apt-get install -y curl vim
+RUN apk update && apk add curl vim
 
 WORKDIR /elixir_plug_poc
 
-COPY ./mix* ./
+COPY . .
 
 ENV MIX_ENV=test
 
-RUN mix hex.info && mix do deps.get
+RUN mix do hex.info, deps.get
 
 COPY . . 
 
@@ -22,8 +22,10 @@ RUN mix test
 
 ENV MIX_ENV=prod
 
-RUN mix do compile, release
+RUN mix deps.get 
+RUN mix compile 
+RUN mix distillery.release 
 
 EXPOSE $PORT
 
-CMD trap exit TERM; /elixir_plug_poc/rel/elixir_plug_poc/bin/elixir_plug_poc foreground & wait
+CMD /elixir_plug_poc/_build/prod/rel/elixir_plug_poc/bin/elixir_plug_poc foreground

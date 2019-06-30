@@ -1,14 +1,17 @@
-kind: StatefulSet
 apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: elixir-plug-poc
   labels:
     app: elixir-plug-poc
+  namespace: default
 spec:
+  podManagementPolicy: OrderedReady
   replicas: 1
   selector:
     matchLabels:
       app: elixir-plug-poc
+  serviceName: "elixir-plug-poc"
   template:
     metadata:
       creationTimestamp: null
@@ -16,21 +19,23 @@ spec:
         app: elixir-plug-poc
     spec:
       containers:
-        - name: elixir-plug-poc
-          image: binarytemple/elixir_plug_poc
-          ports:
-          - containerPort: 3306
-            name: mysql
-          args: 
-          - 'foreground'
-          imagePullPolicy: Always
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
+      - args:
+        - foreground
+        image: binarytemple/elixir_plug_poc
+        imagePullPolicy: Always
+        name: elixir-plug-poc
+        ports:
+        - containerPort: 4000
+          name: plug 
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
-      securityContext: {}
+      restartPolicy: Always
       schedulerName: default-scheduler
-  serviceName: ''
-  podManagementPolicy: OrderedReady
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:

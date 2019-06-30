@@ -17,13 +17,14 @@ spec:
       creationTimestamp: null
       labels:
         app: elixir-plug-poc
+      name: elixir-plug-poc
     spec:
       containers:
-      - args:
-        - foreground
+      - name: elixir-plug-poc
+        args:
+          - foreground
         image: binarytemple/elixir_plug_poc
         imagePullPolicy: Always
-        name: elixir-plug-poc
         ports:
         - containerPort: 4000
           name: http

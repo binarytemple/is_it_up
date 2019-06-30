@@ -38,6 +38,7 @@ environment :prod do
   set include_erts: false
   set include_src: false
   set cookie: :"s6%RrhH_&njlgY_{Ou:>pWX$O]^nIwAPDZ/:>jU:zIT}3{4YlULn&SNZr54Wa$VK"
+  set pre_configure_hooks: "rel/hooks/pre.configure.d"
   set vm_args: "rel/vm.args"
 end
 

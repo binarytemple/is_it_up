@@ -11,3 +11,4 @@ codeship*
 deps
 erl_crash.dump
 tags
+k8s

@@ -8,7 +8,11 @@ RUN apk update && apk add curl vim
 
 WORKDIR /otp/app
 
-COPY . .
+COPY config config/
+COPY lib lib/
+COPY mix.exs .
+COPY mix.lock .
+COPY test test/
 
 ENV MIX_ENV=test
 
@@ -16,7 +20,13 @@ RUN mix do hex.info, deps.get
 
 RUN mix test
 
-RUN MIX_ENV=prod mix do deps.get, compile, distillery.release
+ENV MIX_ENV=prod 
+
+RUN mix do deps.get, compile
+
+COPY rel rel/
+
+RUN mix do distillery.release
 
 FROM bitwalker/alpine-elixir:1.9.0 
 

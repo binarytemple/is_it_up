@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir:1.9.0 as builder
+FROM bitwalker/alpine-elixir:1.8.2 as builder
 
 MAINTAINER admin@binarytemple.co.uk
 
@@ -28,7 +28,7 @@ COPY rel rel/
 
 RUN mix do distillery.release
 
-FROM bitwalker/alpine-elixir:1.9.0 
+FROM bitwalker/alpine-elixir:1.8.2 
 
 COPY --from=builder /otp/app/_build/prod/rel/elixir_plug_poc/releases/*/elixir_plug_poc.tar.gz /opt/app/
 

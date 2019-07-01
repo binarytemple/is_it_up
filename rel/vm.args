@@ -6,7 +6,7 @@
 -name <%= release_name %>@${HOSTNAME_FQDN}
 
 ## Cookie for distributed erlang
--setcookie ${COOKIE}
+-setcookie ${ERLANG_COOKIE}
 
 ## Heartbeat management; auto-restarts VM if it dies or becomes unresponsive
 ## (Disabled by default..use with caution!)

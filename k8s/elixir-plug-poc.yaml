@@ -33,8 +33,8 @@ spec:
         args:
           - foreground
         env:
-          - name: COOKIE
-            value: "foo"
+          - name: ERLANG_COOKIE
+            value: "cookie"
         imagePullPolicy: Always
         ports:
         - containerPort: 4000

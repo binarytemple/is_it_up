@@ -5,7 +5,7 @@ defmodule ElixirPlugPoc.Mixfile do
     [
       app: :elixir_plug_poc,
       version: "0.0.1",
-      elixir: "~> 1.2",
+      elixir: "~> 1.8",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps()
@@ -28,7 +28,7 @@ defmodule ElixirPlugPoc.Mixfile do
   def applications(_) do
     [
       mod: {HelloWorld, []},
-      applications: [:logger, :httpoison, :timex, :cowboy, :plug]
+      applications: [:logger, :httpoison, :timex, :cowboy, :plug, :plug_cowboy]
     ]
   end
 
@@ -37,7 +37,7 @@ defmodule ElixirPlugPoc.Mixfile do
     [
       {:plug_cowboy, "~> 2.1.0"},
       {:httpoison, "~> 1.5.1"},
-      {:distillery, "~> 2.0", runtime: false},
+      {:distillery, "~> 2.1"},
       {:timex, "~> 3.6.1 "},
     ]
   end

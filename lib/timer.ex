@@ -5,7 +5,7 @@ defmodule HelloWorld.Timer do
   @time_30_sec "30 * 1000"
   @time_15_sec "15 * 1000"
   @time_10_sec "10 * 1000"
-  @server "binarytemple.co.uk"
+  @server "google.co.uk"
 
   def start_link do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)

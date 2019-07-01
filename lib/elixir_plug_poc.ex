@@ -2,19 +2,18 @@ defmodule HelloWorld do
   use Application
 
   def start(_type, _args) do
-      # The Cowboy has it's own supervision tree.. no need for supervisor
-      Plug.Adapters.Cowboy.http(HelloWorldPipeline , %{})
+    # The Cowboy has it's own supervision tree.. no need for supervisor
 
-      # Import helpers for defining supervisors
-      import Supervisor.Spec
+    # Import helpers for defining supervisors
+    import Supervisor.Spec
 
-      children = [
-        worker(HelloWorld.Timer,[])
-      ]
+    children = [
+      worker(HelloWorld.Timer, []),
+      Plug.Cowboy.child_spec(scheme: :http, plug: HelloWorldPipeline, options: [port: 4000])
+    ]
 
-      # Start the supervisor with our one child
-      {:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
-
+    # Start the supervisor with our one child
+    {:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
 
@@ -25,47 +24,46 @@ defmodule HelloWorldPlug do
     Map.put(opts, :my_prefix, "Hello")
   end
 
-  def call(%Plug.Conn{request_path: "/" } = conn, opts) do
+  def call(%Plug.Conn{request_path: "/"} = conn, opts) do
     available_routes = """
-                       #{opts[:my_prefix]}, World!
-                       /          - this message
-                       /crash     - throw an exception, crash the plug process
-                       /bt_status - check the status of binarytemple.co.uk
-                       / <> name  - display a greeting followed by the specified name
-                      """
+     #{opts[:my_prefix]}, World!
+     /          - this message
+     /crash     - throw an exception, crash the plug process
+     /bt_status - check the status of binarytemple.co.uk
+     / <> name  - display a greeting followed by the specified name
+    """
+
     send_resp(conn, 200, "#{available_routes}")
   end
 
-  def call(%Plug.Conn{request_path: "/crash" } = conn, opts) do
+  def call(%Plug.Conn{request_path: "/crash"} = conn, opts) do
     raise "deliberate exception"
   end
 
-  def call(%Plug.Conn{request_path: "/bt_status" } = conn, opts) do
-    case HelloWorld.Timer.is_it_up do
-      {:ok, :up} -> send_resp(conn, 200, "binarytemple.co.uk - status - good" )
+  def call(%Plug.Conn{request_path: "/bt_status"} = conn, opts) do
+    case HelloWorld.Timer.is_it_up() do
+      {:ok, :up} -> send_resp(conn, 200, "binarytemple.co.uk - status - good")
       {:ok, :bad_status} -> send_resp(conn, 200, "binarytemple.co.uk - status - bad")
-      _ ->  send_resp(conn, 200, "binarytemple.co.uk - status - unknown")
+      _ -> send_resp(conn, 200, "binarytemple.co.uk - status - unknown")
     end
   end
 
   def call(%Plug.Conn{request_path: "/" <> name} = conn, opts) do
-      greeting = "Hello, #{name}!" 
-      conn |> 
-      update_resp_header("x-greeting", greeting, &(&1)) |> 
-      send_resp(200, greeting) 
-  end
+    greeting = "Hello, #{name}!"
 
+    conn
+    |> update_resp_header("x-greeting", greeting, & &1)
+    |> send_resp(200, greeting)
+  end
 end
 
 defmodule HelloWorldPipeline do
-   
   # We use Plug.Builder to have access to the plug/2 macro.
   # This macro can receive a function or a module plug and an
   # optional parameter that will be passed unchanged to the 
   # given plug.
   use Plug.Builder
 
-  plug Plug.Logger
-  plug HelloWorldPlug, %{}
-
+  plug(Plug.Logger)
+  plug(HelloWorldPlug, %{})
 end

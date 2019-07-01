@@ -1,29 +1,50 @@
-FROM elixir
+FROM bitwalker/alpine-elixir:1.8.2 as builder
 
 MAINTAINER admin@binarytemple.co.uk
 
-ENV PORT 4000
-
 RUN mix local.hex --force && mix local.rebar --force 
 
-RUN apt-get update -y && apt-get install -y curl vim
+RUN apk update && apk add curl vim
 
-WORKDIR /elixir_plug_poc
+WORKDIR /otp/app
 
-COPY ./mix* ./
+COPY config config/
+COPY lib lib/
+COPY mix.exs .
+COPY mix.lock .
+COPY test test/
 
 ENV MIX_ENV=test
 
-RUN mix hex.info && mix do deps.get
-
-COPY . . 
+RUN mix do hex.info, deps.get
 
 RUN mix test
 
-ENV MIX_ENV=prod
+ENV MIX_ENV=prod 
 
-RUN mix do compile, release
+RUN mix do deps.get, compile
 
-EXPOSE $PORT
+COPY rel rel/
 
-CMD trap exit TERM; /elixir_plug_poc/rel/elixir_plug_poc/bin/elixir_plug_poc foreground & wait
+RUN mix do distillery.release
+
+FROM bitwalker/alpine-elixir:1.8.2 
+
+COPY --from=builder /otp/app/_build/prod/rel/elixir_plug_poc/releases/*/elixir_plug_poc.tar.gz /opt/app/
+
+WORKDIR /opt/app/
+
+RUN tar zxvfp ./elixir_plug_poc.tar.gz && \
+    rm -rf ./elixir_plug_poc.tar.gz && \
+    rm -rf ./.hex && \
+    rm -rf ./.mix 
+ 
+RUN apk update && apk add bind-tools
+     
+EXPOSE 4000
+
+ENV REPLACE_OS_VARS=true
+
+ENTRYPOINT ["/opt/app/bin/elixir_plug_poc"]
+
+CMD ["foreground"]

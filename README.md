@@ -69,7 +69,7 @@ bash-4.4# dig *.elixir-plug-poc.default.svc.cluster.local
 ;; MSG SIZE  rcvd: 125
 ```
 
-Or SRV query : 
+Or SRV query :
 
 ```
 bash-4.4# dig SRV elixir-plug-poc.default.svc.cluster.local
@@ -105,14 +105,14 @@ elixir-plug-poc-2.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.59
 
 
 
-Lets attach to the running Elixir application inside the container : 
+Lets attach to the running Elixir application inside the container :
 
 ```
 bin/elixir_plug_poc remote_console
 ```
 
 
-And verify `:inet_res.nslookup` is working correctly : 
+And verify `:inet_res.nslookup` is working correctly :
 
 ```
 iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)32> :inet_res.nslookup('elixir-plug-poc.default.svc.cluster.
@@ -124,7 +124,7 @@ local', :any, :srv)
     {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30,
      {10, 25, 0, 'elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local'},
      :undefined, [], false},
-    {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30, 
+    {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30,
      {10, 25, 0, 'elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local'},
      :undefined, [], false},
     {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30,
@@ -145,3 +145,20 @@ local', :any, :srv)
      :in, 0, 30, {10, 1, 0, 60}, :undefined, [], false}
   ]}}
 ```
+
+
+Verify distributed Erlang working correctly:
+
+    iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)11> Node.connect(:'elixir_plug_poc@elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local')
+    true
+
+    iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)20> Node.list
+    [:"elixir_plug_poc@elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local"]
+
+    iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)25> Node.ping(:"elixir_plug_poc@elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local")
+    :pong
+
+
+
+
+

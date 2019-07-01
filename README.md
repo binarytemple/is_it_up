@@ -2,12 +2,6 @@
 
 Trivial example project to demonstrate the use of [Elixir Plug module](https://github.com/elixir-lang/plug).
 
-This first version can be run by executing the following from an console launched with `iex -S mix`:
-
-```
-Plug.Adapters.Cowboy.http(HelloWorldPlug, %{})
-```
-
 ## Running under docker (downloading from docker hub)
 
 ```
@@ -22,7 +16,9 @@ docker run whatever
 ```
 
 
-## Testing in Kubernetes.
+## Running under Kubernetes.
+
+This is where it gets fancy, this will serve as a handly starting point for distributed Erlang under Kubernetes.
 
 The file `k8s/elixir-plug-poc.yaml` describes a kubernetes statefulset and service.
 

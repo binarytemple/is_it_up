@@ -38,7 +38,9 @@ RUN tar zxvfp ./elixir_plug_poc.tar.gz && \
     rm -rf ./elixir_plug_poc.tar.gz && \
     rm -rf ./.hex && \
     rm -rf ./.mix 
-      
+ 
+RUN apk update && apk add bind-tools
+     
 EXPOSE 4000
 
 ENV REPLACE_OS_VARS=true

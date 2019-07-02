@@ -39,6 +39,8 @@ defmodule ElixirPlugPoc.Mixfile do
       {:httpoison, "~> 1.5.1"},
       {:distillery, "~> 2.1.1"},
       {:timex, "~> 3.6.1 "},
+      {:libcluster, "~> 3.1"},
+      {:confex, "~> 3.4.0"}
     ]
   end
 end

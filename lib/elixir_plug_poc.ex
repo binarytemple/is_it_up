@@ -2,17 +2,17 @@ defmodule HelloWorld do
   use Application
 
   def start(_type, _args) do
-    # The Cowboy has it's own supervision tree.. no need for supervisor
+    Confex.resolve_env!(:elixir_plug_poc)
 
-    # Import helpers for defining supervisors
-    import Supervisor.Spec
+    http_port = Application.get_env(:elixir_plug_poc, :http_port)
 
     children = [
       worker(HelloWorld.Timer, []),
       Plug.Cowboy.child_spec(scheme: :http, plug: HelloWorldPipeline, options: [port: 4000])
+      Plug.Cowboy.child_spec(scheme: :http, plug: HelloWorldPipeline, options: [port: http_port])
     ]
 
-    # Start the supervisor with our one child
+    Supervisor.start_link(children, strategy: :one_for_one)
     {:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
   end
 end

@@ -6,9 +6,11 @@ defmodule HelloWorld do
 
     http_port = Application.get_env(:elixir_plug_poc, :http_port)
 
+    topologies = Application.get_env(:libcluster, :topologies)
     children = [
       worker(HelloWorld.Timer, []),
       Plug.Cowboy.child_spec(scheme: :http, plug: HelloWorldPipeline, options: [port: 4000])
+      {Cluster.Supervisor, [topologies, [name: MyApp.ClusterSupervisor]]},
       Plug.Cowboy.child_spec(scheme: :http, plug: HelloWorldPipeline, options: [port: http_port])
     ]
 

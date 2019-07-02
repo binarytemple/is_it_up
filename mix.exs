@@ -37,7 +37,7 @@ defmodule ElixirPlugPoc.Mixfile do
     [
       {:plug_cowboy, "~> 2.1.0"},
       {:httpoison, "~> 1.5.1"},
-      {:distillery, "~> 2.1"},
+      {:distillery, "~> 2.1.1"},
       {:timex, "~> 3.6.1 "},
     ]
   end

@@ -38,11 +38,13 @@ end
 release :elixir_plug_poc do
   set version: current_version(:elixir_plug_poc)
   set applications: [
-    :runtime_tools,
+    :confex,
     :cowboy,
-    :plug_cowboy,
+    :elixir_plug_poc,
+    :libcluster,
     :logger,
-    :elixir_plug_poc
+    :plug_cowboy,
+    :runtime_tools,
   ]
 end
 

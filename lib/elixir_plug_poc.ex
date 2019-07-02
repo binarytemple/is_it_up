@@ -36,26 +36,29 @@ defmodule HelloWorldPlug do
      #{opts[:my_prefix]}, World!
      /          - this message
      /crash     - throw an exception, crash the plug process
-     /bt_status - check the status of binarytemple.co.uk
+     /google_status - check the status of google.co.uk
      / <> name  - display a greeting followed by the specified name
     """
 
     send_resp(conn, 200, "#{available_routes}")
   end
 
-  def call(%Plug.Conn{request_path: "/crash"} = conn, opts) do
+  def call(%Plug.Conn{request_path: "/crash"}, _opts) do
     raise "deliberate exception"
   end
 
-  def call(%Plug.Conn{request_path: "/bt_status"} = conn, opts) do
+  def call(%Plug.Conn{request_path: "/google_status"} = conn, _opts) do
     case HelloWorld.Timer.is_it_up() do
-      {:ok, :up} -> send_resp(conn, 200, "binarytemple.co.uk - status - good")
-      {:ok, :bad_status} -> send_resp(conn, 200, "binarytemple.co.uk - status - bad")
-      _ -> send_resp(conn, 200, "binarytemple.co.uk - status - unknown")
+      {:ok, true} ->
+        send_resp(conn, 200, "google.co.uk - status - good")
+
+      {:ok, false} ->
+        send_resp(conn, 200, "google.co.uk - status - bad")
+        #  x -> send_resp(conn, 200, "google.co.uk - status - #{IO.inspect(x)}")
     end
   end
 
-  def call(%Plug.Conn{request_path: "/" <> name} = conn, opts) do
+  def call(%Plug.Conn{request_path: "/" <> name} = conn, _opts) do
     greeting = "Hello, #{name}!"
 
     conn
@@ -67,7 +70,7 @@ end
 defmodule HelloWorldPipeline do
   # We use Plug.Builder to have access to the plug/2 macro.
   # This macro can receive a function or a module plug and an
-  # optional parameter that will be passed unchanged to the 
+  # optional parameter that will be passed unchanged to the
   # given plug.
   use Plug.Builder
 

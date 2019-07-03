@@ -23,10 +23,11 @@ defmodule HelloWorld.Timer do
 
   @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(arg) do
-    IO.inspect(arg)
+    IO.puts("start_link #{inspect(arg)}")
     start_link()
   end
 
+  @spec start_link :: :ignore | {:error, any} | {:ok, pid}
   def start_link do
     GenServer.start_link(__MODULE__, %Timer{}, name: __MODULE__)
   end

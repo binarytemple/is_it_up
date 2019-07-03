@@ -19,28 +19,30 @@ defmodule ElixirPlugPoc.Mixfile do
     applications(Mix.env())
   end
 
-  def applications(:test) do
-    [
-      applications: [:logger, :httpoison, :timex, :cowboy, :plug]
-    ]
-  end
+  # def applications(:test) do
+  #  [
+  #    applications: [:logger, :httpoison, :timex, :cowboy, :plug]
+  #  ]
+  # end
 
   def applications(_) do
     [
       mod: {HelloWorld, []},
-      applications: [:logger, :httpoison, :timex, :cowboy, :plug, :plug_cowboy]
+      extra_applications: [:confex]
     ]
   end
 
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:plug_cowboy, "~> 2.1.0"},
-      {:httpoison, "~> 1.5.1"},
+      {:confex, "~> 3.4.0"},
       {:distillery, "~> 2.1.1"},
-      {:timex, "~> 3.6.1 "},
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
+      {:httpoison, "~> 1.5.1"},
       {:libcluster, "~> 3.1"},
-      {:confex, "~> 3.4.0"}
+      {:plug_cowboy, "~> 2.1.0"},
+      {:rexbug ,   "~> 1.0" },
+      {:timex, "~> 3.6.1 "},
     ]
   end
 end

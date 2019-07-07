@@ -23,7 +23,7 @@ defmodule ElixirPlugPoc.Mixfile do
     [
       applications: [:confex, :logger, :httpoison, :timex, :cowboy, :plug]
     ]
-   end
+  end
 
   def applications(_) do
     [
@@ -46,7 +46,7 @@ defmodule ElixirPlugPoc.Mixfile do
       {:plug_cowboy, "~> 2.1.0"},
       {:rexbug, "~> 1.0"},
       {:timex, "~> 3.6.1 "},
-      {:telemetry, "~> 0.4.0"},
+      {:telemetry, "~> 0.4.0"}
     ]
   end
 end

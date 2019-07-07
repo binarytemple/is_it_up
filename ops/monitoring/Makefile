@@ -1,4 +1,5 @@
 deploy-monitoring: 
+	kubectl create namespace monitoring || true
 	kubectl apply --force \
 		-f $(shell pwd)/alertmanager-templates.configmap.yaml \
 		-f $(shell pwd)/grafana-import-dashboards.configmap.yaml \

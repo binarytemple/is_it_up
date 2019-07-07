@@ -1,3 +1,10 @@
+
+mix-run-0:
+	HTTP_PORT=4000 iex --cookie foo --name a@127.0.0.1 -S mix
+
+mix-run-1:
+	HTTP_PORT=4001 iex --cookie foo --name b@127.0.0.1 -S mix
+
 build:
 	docker build  . -f ops/Dockerfile -t binarytemple/elixir_plug_poc:latest
 

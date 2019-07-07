@@ -4,7 +4,7 @@ build:
 docker-run: build
 	docker run -ti -p 4000:4000 --rm binarytemple/elixir_plug_poc console
 
-push: docker-build
+push: build
 	docker push binarytemple/elixir_plug_poc:latest
 
 deploy-app:

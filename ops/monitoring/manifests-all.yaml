@@ -2508,6 +2508,11 @@ data:
       - job_name: 'kubernetes-pods'
         kubernetes_sd_configs:
           - role: pod
+              namespaces:
+               names:
+                - default
+                - elixir
+                - monitoring
         relabel_configs:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)

@@ -41,4 +41,4 @@ port-forward-grafana:
 	$(MAKE) -C $(shell pwd)/ops/monitoring/ port-forward-grafana
 
 port-forward-elixir:
-	kubectl port-forward --namespace elixir elixir-plug-poc-0 14000
+	kubectl port-forward --namespace elixir elixir-plug-poc-0 14000:4000

@@ -1,10 +1,5 @@
 # Derived from ./manifests
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: monitoring
----
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
@@ -222,32 +217,32 @@ spec:
           # The following env variables set up basic auth twith the default admin user and admin password.
           - name: GF_AUTH_BASIC_ENABLED
             value: "true"
+          - name: GF_AUTH_ANONYMOUS_ENABLED
+            value: "false"
           - name: GF_SECURITY_ADMIN_USER
             valueFrom:
               secretKeyRef:
-                name: grafana
+                name: monitoring
                 key: admin-username
           - name: GF_SECURITY_ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: grafana
+                name: monitoring
                 key: admin-password
-          - name: GF_AUTH_ANONYMOUS_ENABLED
-            value: "false"
           - name: GF_SMTP_HOST
             valueFrom:
               secretKeyRef:
-                name: grafana
+                name: monitoring
                 key: smtp-host
           - name: GF_SMTP_USER
             valueFrom:
               secretKeyRef:
-                name: grafana
+                name: monitoring
                 key: smtp-username
           - name: GF_SMTP_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: grafana
+                name: monitoring
                 key: smtp-password
           # - name: GF_AUTH_ANONYMOUS_ORG_ROLE
           #   value: Admin

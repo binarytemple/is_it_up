@@ -4,6 +4,9 @@ services:
 before_install: 
   - docker pull bitwalker/alpine-elixir:latest
 
+env:
+  - ERLANG_COOKIE=foo
+
 script:
   - make build
   - make docker-run

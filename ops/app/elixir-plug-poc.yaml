@@ -46,7 +46,7 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: debug
-          mountPath: /usr/share/nginx/html
+          mountPath: /debug
   volumeClaimTemplates:
   - metadata:
       name: debug

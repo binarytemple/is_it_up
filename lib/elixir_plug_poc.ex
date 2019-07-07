@@ -19,7 +19,7 @@ defmodule HelloWorld do
         shutdown: 5000,
         type: :worker
       },
-      {Cluster.Supervisor, [topologies, [name: MyApp.ClusterSupervisor]]},
+      {Cluster.Supervisor, [topologies, [name: ClusterSupervisor]]},
       Plug.Cowboy.child_spec(scheme: :http, plug: HelloWorldPipeline, options: [port: http_port])
     ]
 

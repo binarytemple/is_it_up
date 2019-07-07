@@ -18,6 +18,8 @@ rerun-grafana-import-dashboards: _rerun-grafana-import-dashboards deploy-monitor
 _rerun-grafana-import-dashboards:
 	kubectl -n monitoring delete job grafana-import-dashboards || true
 
+logs-grafana-import-dashboards:
+	kubectl get pods -n monitoring | awk '/grafana-import-dashboards/{print $$1}'| xargs kubectl -n monitoring logs 
 
 undeploy-monitoring:
 	kubectl delete namespace monitoring

@@ -19,11 +19,11 @@ defmodule ElixirPlugPoc.Mixfile do
     applications(Mix.env())
   end
 
-  # def applications(:test) do
-  #  [
-  #    applications: [:logger, :httpoison, :timex, :cowboy, :plug]
-  #  ]
-  # end
+  def applications(:test) do
+    [
+      applications: [:confex, :logger, :httpoison, :timex, :cowboy, :plug]
+    ]
+   end
 
   def applications(_) do
     [

@@ -19,6 +19,8 @@ metadata:
 spec:
   serviceName: "elixir-plug-poc"
   replicas: 2
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: elixir-plug-poc

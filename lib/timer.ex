@@ -1,7 +1,6 @@
 defmodule HelloWorld.Timer do
   require Logger
 
-
   alias HelloWorld.Timer
 
   defstruct last_check: nil, status: nil
@@ -59,7 +58,13 @@ defmodule HelloWorld.Timer do
 
   def handle_info(:do_check, _state) do
     Process.send_after(self(), :do_check, check_interval())
-    %{status_code: x} = HTTPoison.head!("http://#{check_host()}")
+
+    host = "http://#{check_host()}"
+    fn_check = fn -> HTTPoison.head!(host) end
+    {time, %{status_code: x}} = :timer.tc(fn_check, [])
+    CheckInstrumenter.http_check(host)
+    CheckInstrumenter.http_check_duration_milliseconds(time)
+
     IO.inspect(x)
     {:noreply, %Timer{last_check: get_now(), status: x}}
   end

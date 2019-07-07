@@ -71,7 +71,6 @@ defmodule HelloWorldPlug do
   end
 end
 
-
 defmodule MetricsPlugExporter do
   use Prometheus.PlugExporter
   # def init(x) do
@@ -90,8 +89,15 @@ defmodule HelloWorldPipeline do
   plug(HelloWorldPlug, %{})
 end
 
-defmodule ExampleInstrumenter do
+defmodule CheckInstrumenter do
   use Prometheus.Metric
+  alias Prometheus.Metric.{Boolean, Counter, Gauge, Histogram, Summary}
+
+  @counter [
+    name: :http_check_total,
+    help: "counter incremeted for every http request upstream",
+    labels: [:target]
+  ]
 
   @histogram [
     name: :http_check_duration_milliseconds,
@@ -100,8 +106,16 @@ defmodule ExampleInstrumenter do
     help: "Http check execution time"
   ]
 
-  def instrument(%{time: time, method: method}) do
-    Histogram.observe([name: :http_check_duration_milliseconds, labels: [method]], time)
+  @spec http_check(String.t()) :: any
+  def http_check(target) do
+    Counter.inc(
+      name: :http_check_total,
+      labels: [target]
+    )
+  end
+
+  @spec http_check_duration_milliseconds(any) :: any
+  def http_check_duration_milliseconds(time) do
+    Histogram.observe([name: :http_check_duration_milliseconds], time)
   end
 end
-

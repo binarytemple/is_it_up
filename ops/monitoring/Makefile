@@ -1,5 +1,11 @@
 deploy-monitoring: 
-	kubectl apply --force -f $(shell pwd)/manifests-all.yaml
+	kubectl apply --force \
+		-f $(shell pwd)/alertmanager-templates.configmap.yaml \
+		-f $(shell pwd)/grafana-import-dashboards.configmap.yaml \
+		-f $(shell pwd)/prometheus-core.configmap.yaml \
+		-f $(shell pwd)/prometheus-rules.configmap.yaml \
+		-f $(shell pwd)/manifests-all.yaml \
+	&& echo "monitoring applied"
 
 undeploy-monitoring:
 	kubectl delete namespace monitoring

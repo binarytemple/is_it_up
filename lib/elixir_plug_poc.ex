@@ -101,8 +101,8 @@ defmodule CheckInstrumenter do
 
   @histogram [
     name: :http_check_duration_milliseconds,
-    labels: [:method],
-    buckets: [100, 300, 500, 750, 1000],
+    labels: [:value],
+    buckets: :default,
     help: "Http check execution time"
   ]
 
@@ -116,6 +116,7 @@ defmodule CheckInstrumenter do
 
   @spec http_check_duration_milliseconds(any) :: any
   def http_check_duration_milliseconds(time) do
-    Histogram.observe([name: :http_check_duration_milliseconds], time)
+    Histogram.observe([name: :http_check_duration_milliseconds,
+    labels: [:value]], time)
   end
 end

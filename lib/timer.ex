@@ -59,19 +59,19 @@ defmodule HelloWorld.Timer do
   def handle_info(:do_check, _state) do
 
 
-    Process.send_after(self(), :do_check, System.monotonic_time()  +check_interval(),:abs)
-
-    t = Task.async fn() ->
-
+    Process.send_after(self(), :do_check, check_interval())
     host = "http://#{check_host()}"
-    fn_check = fn -> HTTPoison.head!(host) end
-    {time, %{status_code: x}} = :timer.tc(fn_check, [])
     CheckInstrumenter.http_check(host)
+
+    fn_check = fn() ->
+    {time, %{status_code: x}} = :timer.tc(&HTTPoison.head!/1,[host])
     CheckInstrumenter.http_check_duration_milliseconds(time)
-    IO.inspect(x)
-    {:noreply, %Timer{last_check: get_now(), status: x}}
+    x
     end
-    Task.await(t)
+    t = Task.async(fn_check)
+    res = Task.await(t)
+
+    {:noreply, %Timer{last_check: get_now(), status: res}}
   end
 
   defp get_now() do

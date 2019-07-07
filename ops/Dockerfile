@@ -1,7 +1,5 @@
 FROM bitwalker/alpine-elixir:1.9.0
 
-MAINTAINER admin@binarytemple.co.uk
-
 RUN mix local.hex --force && mix local.rebar --force 
 
 RUN apk update && apk add curl vim

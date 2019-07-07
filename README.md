@@ -20,7 +20,7 @@ docker run whatever
 
 This is where it gets fancy, this will serve as a handly starting point for distributed Erlang under Kubernetes.
 
-The file `k8s/elixir-plug-poc.yaml` describes a kubernetes statefulset and service.
+The file `k8s/deploy/elixir-plug-poc.yaml` describes a kubernetes statefulset and service.
 
 When the file is applied to your kubernetes cluster, two pods will be created - with hostnames corresponding to the FQDN of the nodes.
 

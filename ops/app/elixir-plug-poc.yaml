@@ -26,6 +26,10 @@ spec:
     metadata:
       labels:
         app: elixir-plug-poc
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/port: '4000'
     spec:
       containers:
       - name: elixir-plug-poc
@@ -40,3 +44,14 @@ spec:
         - containerPort: 4000
           name: http
           protocol: TCP
+        volumeMounts:
+        - name: debug
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: debug
+    spec:
+      accessModes: [ "ReadWriteMany" ]
+      resources:
+        requests:
+          storage: 200m

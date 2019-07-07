@@ -2,7 +2,10 @@ defmodule HelloWorld do
   use Application
 
   def start(_type, _args) do
+    Confex.resolve_env!(:logger)
+    Logger.configure(Application.get_all_env(:logger))
     Confex.resolve_env!(:elixir_plug_poc)
+    MetricsPlugExporter.setup()
 
     http_port = Application.get_env(:elixir_plug_poc, :http_port)
 
@@ -37,6 +40,7 @@ defmodule HelloWorldPlug do
      /          - this message
      /crash     - throw an exception, crash the plug process
      /google_status - check the status of google.co.uk
+     /metrics - check the status of google.co.uk
      / <> name  - display a greeting followed by the specified name
     """
 
@@ -67,13 +71,37 @@ defmodule HelloWorldPlug do
   end
 end
 
+
+defmodule MetricsPlugExporter do
+  use Prometheus.PlugExporter
+  # def init(x) do
+  #   x
+  # end
+end
+
 defmodule HelloWorldPipeline do
   # We use Plug.Builder to have access to the plug/2 macro.
   # This macro can receive a function or a module plug and an
   # optional parameter that will be passed unchanged to the
   # given plug.
   use Plug.Builder
-
   plug(Plug.Logger)
+  plug(MetricsPlugExporter, %{})
   plug(HelloWorldPlug, %{})
 end
+
+defmodule ExampleInstrumenter do
+  use Prometheus.Metric
+
+  @histogram [
+    name: :http_check_duration_milliseconds,
+    labels: [:method],
+    buckets: [100, 300, 500, 750, 1000],
+    help: "Http check execution time"
+  ]
+
+  def instrument(%{time: time, method: method}) do
+    Histogram.observe([name: :http_check_duration_milliseconds, labels: [method]], time)
+  end
+end
+

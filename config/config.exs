@@ -1,9 +1,20 @@
 use Mix.Config
 
+# (you should replace this with the name of your plug)
+config :prometheus, MetricsPlugExporter,
+  path: "/metrics",
+  ## or :protobuf, or :text
+  format: :auto,
+  registry: :default,
+  auth: false
+
 config :libcluster,
   debug: true
 
-config :logger, level: :info
+config :logger,
+  level: :info,
+  handle_otp_reports: {:system, :boolean, "LAGER_HANDLE_OTP_REPORTS", false},
+  handle_sasl_reports: {:system, :boolean, "LAGER_HANDLE_SASL_REPORTS", false}
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

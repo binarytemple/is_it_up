@@ -1,6 +1,7 @@
 defmodule HelloWorld.Timer do
   require Logger
 
+
   alias HelloWorld.Timer
 
   defstruct last_check: nil, status: nil

@@ -44,6 +44,7 @@ release :elixir_plug_poc do
     :libcluster,
     :logger,
     :plug_cowboy,
+    :prometheus_ex,
     :runtime_tools,
   ]
 end

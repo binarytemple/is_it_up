@@ -1,3 +1,5 @@
+attach-app-0:
+	kubectl -n elixir exec -t -i elixir-plug-poc-0 -- bin/elixir_plug_poc remote_console
 
 mix-run-0:
 	HTTP_PORT=4000 iex --cookie foo --name a@127.0.0.1 -S mix

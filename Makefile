@@ -2,7 +2,7 @@ build:
 	docker build  . -f ops/Dockerfile -t binarytemple/elixir_plug_poc:latest
 
 docker-run: build
-	docker run -ti -p 4000:4000 --rm binarytemple/elixir_plug_poc console
+	docker run -ti -p 4000:4000 -e'ERLANG_COOKIE=foo' --rm binarytemple/elixir_plug_poc console
 
 push: build
 	docker push binarytemple/elixir_plug_poc:latest

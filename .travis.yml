@@ -9,4 +9,3 @@ env:
 
 script:
   - make build
-  - make docker-run

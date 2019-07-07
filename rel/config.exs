@@ -42,6 +42,7 @@ release :elixir_plug_poc do
     :cowboy,
     :elixir_plug_poc,
     :libcluster,
+    :timex,
     :logger,
     :plug_cowboy,
     :prometheus_ex,

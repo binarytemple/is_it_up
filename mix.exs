@@ -27,7 +27,7 @@ defmodule ElixirPlugPoc.Mixfile do
 
   def applications(_) do
     [
-      applications: [:confex, :prometheus_ex, :cowboy, :httpoison],
+      applications: [:confex, :prometheus_ex, :cowboy, :httpoison, :timex],
       mod: {HelloWorld, []}
       # extra_applications: [:confex]
     ]

@@ -1,6 +1,8 @@
 # ElixirPlugPoc
 
-Trivial example project to demonstrate the use of [Elixir Plug module](https://github.com/elixir-lang/plug).
+This project started as a demo project for a talk at wework shoreditch in 2016 demonstrating CI/CD in Elxir with docker. 
+
+It is now a testbed for deploying and monitoring clustered Elixir applications in Kubernetes - with Prometheus monitoring and Grafan metric display.
 
 ## Running under docker (downloading from docker hub)
 

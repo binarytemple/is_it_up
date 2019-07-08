@@ -7,7 +7,7 @@ config :libcluster,
       config: [
         service: "is-it-up",
         application_name: "is_it_up",
-        namespace: "elixir",
+        namespace: {:system, :string, "K8S_NAMESPACE", "elixir"},
         polling_interval: 10_000
       ]
     ]

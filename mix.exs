@@ -1,9 +1,9 @@
-defmodule ElixirPlugPoc.Mixfile do
+defmodule IsItUp.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :elixir_plug_poc,
+      app: :is_it_up,
       version: "0.0.1",
       elixir: "~> 1.8",
       build_embedded: Mix.env() == :prod,
@@ -23,12 +23,12 @@ defmodule ElixirPlugPoc.Mixfile do
     [
       applications: [:confex, :logger, :httpoison, :timex, :cowboy, :plug]
     ]
-   end
+  end
 
   def applications(_) do
     [
       applications: [:confex, :prometheus_ex, :cowboy, :httpoison, :timex],
-      mod: {HelloWorld, []}
+      mod: {IsItUp.App, []}
       # extra_applications: [:confex]
     ]
   end
@@ -45,8 +45,8 @@ defmodule ElixirPlugPoc.Mixfile do
       {:libcluster, "~> 3.1"},
       {:plug_cowboy, "~> 2.1.0"},
       {:rexbug, "~> 1.0"},
-      {:timex, "~> 3.6.1 "},
-      {:telemetry, "~> 0.4.0"},
+      {:timex, "~> 3.6"},
+      {:telemetry, "~> 0.4.0"}
     ]
   end
 end

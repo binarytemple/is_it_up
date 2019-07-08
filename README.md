@@ -7,7 +7,7 @@ It is now a testbed for deploying and monitoring clustered Elixir applications i
 ## Running under docker (downloading from docker hub)
 
 ```
-docker run -p 4000:4000 binarytemple/elixir_plug_poc:<version>
+docker run -p 4000:4000 binarytemple/is_it_up:<version>
 ```
 
 ## Running under docker (build it locally)
@@ -22,29 +22,29 @@ docker run whatever
 
 This is where it gets fancy, this will serve as a handly starting point for distributed Erlang under Kubernetes.
 
-The file `k8s/deploy/elixir-plug-poc.yaml` describes a kubernetes statefulset and service.
+The file `k8s/deploy/is-it-up.yaml` describes a kubernetes statefulset and service.
 
 When the file is applied to your kubernetes cluster, two pods will be created - with hostnames corresponding to the FQDN of the nodes.
 
 ```
-kubectl apply -f k8s/elixir-plug-poc.yaml
+kubectl apply -f k8s/is-it-up.yaml
 ```
 
 ```
-kubectl exec -t -i elixir-plug-poc-0 /bin/bash
+kubectl exec -t -i is-it-up-0 /bin/bash
 ```
 
 ```
 bash-4.4# hostname -f
-elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local
+is-it-up-0.is-it-up.default.svc.cluster.local
 ```
 
 You can discover the other node names using a SRV or wildcard query after removing the first dot from the hostname i.e.
 
 ```
-bash-4.4# dig *.elixir-plug-poc.default.svc.cluster.local
+bash-4.4# dig *.is-it-up.default.svc.cluster.local
 
-; <<>> DiG 9.12.4-P2 <<>> *.elixir-plug-poc.default.svc.cluster.local
+; <<>> DiG 9.12.4-P2 <<>> *.is-it-up.default.svc.cluster.local
 ;; global options: +cmd
 ;; Got answer:
 ;; WARNING: .local is reserved for Multicast DNS
@@ -53,13 +53,13 @@ bash-4.4# dig *.elixir-plug-poc.default.svc.cluster.local
 ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 0
 
 ;; QUESTION SECTION:
-;*.elixir-plug-poc.default.svc.cluster.local. IN        A
+;*.is-it-up.default.svc.cluster.local. IN        A
 
 ;; ANSWER SECTION:
-*.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.55
-*.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.57
-*.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.59
-*.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.60
+*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.55
+*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.57
+*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.59
+*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.60
 
 ;; Query time: 0 msec
 ;; SERVER: 10.96.0.10#53(10.96.0.10)
@@ -70,9 +70,9 @@ bash-4.4# dig *.elixir-plug-poc.default.svc.cluster.local
 Or SRV query :
 
 ```
-bash-4.4# dig SRV elixir-plug-poc.default.svc.cluster.local
+bash-4.4# dig SRV is-it-up.default.svc.cluster.local
 
-; <<>> DiG 9.12.4-P2 <<>> SRV elixir-plug-poc.default.svc.cluster.local
+; <<>> DiG 9.12.4-P2 <<>> SRV is-it-up.default.svc.cluster.local
 ;; global options: +cmd
 ;; Got answer:
 ;; WARNING: .local is reserved for Multicast DNS
@@ -81,19 +81,19 @@ bash-4.4# dig SRV elixir-plug-poc.default.svc.cluster.local
 ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 4
 
 ;; QUESTION SECTION:
-;elixir-plug-poc.default.svc.cluster.local. IN SRV
+;is-it-up.default.svc.cluster.local. IN SRV
 
 ;; ANSWER SECTION:
-elixir-plug-poc.default.svc.cluster.local. 30 IN SRV 10 25 0 elixir-plug-poc-3.elixir-plug-poc.default.svc.cluster.local.
-elixir-plug-poc.default.svc.cluster.local. 30 IN SRV 10 25 0 elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local.
-elixir-plug-poc.default.svc.cluster.local. 30 IN SRV 10 25 0 elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local.
-elixir-plug-poc.default.svc.cluster.local. 30 IN SRV 10 25 0 elixir-plug-poc-2.elixir-plug-poc.default.svc.cluster.local.
+is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-3.is-it-up.default.svc.cluster.local.
+is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-0.is-it-up.default.svc.cluster.local.
+is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-1.is-it-up.default.svc.cluster.local.
+is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-2.is-it-up.default.svc.cluster.local.
 
 ;; ADDITIONAL SECTION:
-elixir-plug-poc-3.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.60
-elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.55
-elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.57
-elixir-plug-poc-2.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.59
+is-it-up-3.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.60
+is-it-up-0.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.55
+is-it-up-1.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.57
+is-it-up-2.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.59
 
 ;; Query time: 0 msec
 ;; SERVER: 10.96.0.10#53(10.96.0.10)
@@ -106,40 +106,40 @@ elixir-plug-poc-2.elixir-plug-poc.default.svc.cluster.local. 30 IN A 10.1.0.59
 Lets attach to the running Elixir application inside the container :
 
 ```
-bin/elixir_plug_poc remote_console
+bin/is_it_up remote_console
 ```
 
 
 And verify `:inet_res.nslookup` is working correctly :
 
 ```
-iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)32> :inet_res.nslookup('elixir-plug-poc.default.svc.cluster.
+iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)32> :inet_res.nslookup('is-it-up.default.svc.cluster.
 local', :any, :srv)
 {:ok,
  {:dns_rec, {:dns_header, 1, true, :query, true, false, true, true, false, 0},
-  [{:dns_query, 'elixir-plug-poc.default.svc.cluster.local', :srv, :any}],
+  [{:dns_query, 'is-it-up.default.svc.cluster.local', :srv, :any}],
   [
-    {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local'},
+    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
+     {10, 25, 0, 'is-it-up-0.is-it-up.default.svc.cluster.local'},
      :undefined, [], false},
-    {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local'},
+    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
+     {10, 25, 0, 'is-it-up-1.is-it-up.default.svc.cluster.local'},
      :undefined, [], false},
-    {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'elixir-plug-poc-2.elixir-plug-poc.default.svc.cluster.local'},
+    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
+     {10, 25, 0, 'is-it-up-2.is-it-up.default.svc.cluster.local'},
      :undefined, [], false},
-    {:dns_rr, 'elixir-plug-poc.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'elixir-plug-poc-3.elixir-plug-poc.default.svc.cluster.local'},
+    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
+     {10, 25, 0, 'is-it-up-3.is-it-up.default.svc.cluster.local'},
      :undefined, [], false}
   ], [],
   [
-    {:dns_rr, 'elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local', :a,
+    {:dns_rr, 'is-it-up-0.is-it-up.default.svc.cluster.local', :a,
      :in, 0, 30, {10, 1, 0, 55}, :undefined, [], false},
-    {:dns_rr, 'elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local', :a,
+    {:dns_rr, 'is-it-up-1.is-it-up.default.svc.cluster.local', :a,
      :in, 0, 30, {10, 1, 0, 57}, :undefined, [], false},
-    {:dns_rr, 'elixir-plug-poc-2.elixir-plug-poc.default.svc.cluster.local', :a,
+    {:dns_rr, 'is-it-up-2.is-it-up.default.svc.cluster.local', :a,
      :in, 0, 30, {10, 1, 0, 59}, :undefined, [], false},
-    {:dns_rr, 'elixir-plug-poc-3.elixir-plug-poc.default.svc.cluster.local', :a,
+    {:dns_rr, 'is-it-up-3.is-it-up.default.svc.cluster.local', :a,
      :in, 0, 30, {10, 1, 0, 60}, :undefined, [], false}
   ]}}
 ```
@@ -147,13 +147,13 @@ local', :any, :srv)
 
 Verify distributed Erlang working correctly:
 
-    iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)11> Node.connect(:'elixir_plug_poc@elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local')
+    iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)11> Node.connect(:'is_it_up@is-it-up-1.is-it-up.default.svc.cluster.local')
     true
 
-    iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)20> Node.list
-    [:"elixir_plug_poc@elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local"]
+    iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)20> Node.list
+    [:"is_it_up@is-it-up-1.is-it-up.default.svc.cluster.local"]
 
-    iex(elixir_plug_poc@elixir-plug-poc-0.elixir-plug-poc.default.svc.cluster.local)25> Node.ping(:"elixir_plug_poc@elixir-plug-poc-1.elixir-plug-poc.default.svc.cluster.local")
+    iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)25> Node.ping(:"is_it_up@is-it-up-1.is-it-up.default.svc.cluster.local")
     :pong
 
 

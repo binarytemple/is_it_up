@@ -28,12 +28,12 @@ RUN mix do distillery.release
 
 FROM bitwalker/alpine-elixir:1.9.0
 
-COPY --from=0 /otp/app/_build/prod/rel/elixir_plug_poc/releases/*/elixir_plug_poc.tar.gz /opt/app/
+COPY --from=0 /otp/app/_build/prod/rel/is_it_up/releases/*/is_it_up.tar.gz /opt/app/
 
 WORKDIR /opt/app/
 
-RUN tar zxvfp ./elixir_plug_poc.tar.gz && \
-    rm -rf ./elixir_plug_poc.tar.gz && \
+RUN tar zxvfp ./is_it_up.tar.gz && \
+    rm -rf ./is_it_up.tar.gz && \
     rm -rf ./.hex && \
     rm -rf ./.mix 
  
@@ -43,6 +43,6 @@ EXPOSE 4000
 
 ENV REPLACE_OS_VARS=true
 
-ENTRYPOINT ["/opt/app/bin/elixir_plug_poc"]
+ENTRYPOINT ["/opt/app/bin/is_it_up"]
 
 CMD ["foreground"]

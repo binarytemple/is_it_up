@@ -1,15 +1,15 @@
-defmodule HelloWorldPlugTest do
+defmodule IsItUpTest do
   use ExUnit.Case
   use ExUnit.Case, async: true
   use Plug.Test
 
-  @opts HelloWorldPlug.init(%{})
+  @opts IsItUp.Plug.Root.init(%{})
 
   test "returns 'Hello, World!'" do
     conn = conn(:get, "/")
 
     # Invoke the plug
-    conn = HelloWorldPlug.call(conn, @opts)
+    conn = IsItUp.Plug.Root.call(conn, @opts)
 
     assert conn.state == :sent
     assert conn.status == 200
@@ -20,7 +20,7 @@ defmodule HelloWorldPlugTest do
     conn = conn(:get, "/Torben")
 
     # Invoke the plug
-    conn = HelloWorldPlug.call(conn, @opts)
+    conn = IsItUp.Plug.Root.call(conn, @opts)
 
     assert conn.state == :sent
     assert conn.status == 200

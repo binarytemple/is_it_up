@@ -10,7 +10,7 @@ defmodule IsItUp.Metrics.Instrumenter do
   ]
 
   @histogram [
-    name: :http_check_duration_milliseconds,
+    name: :http_check_duration_microseconds,
     labels: [:value],
     buckets: :default,
     help: "Http check execution time"
@@ -27,7 +27,7 @@ defmodule IsItUp.Metrics.Instrumenter do
   @spec http_check_duration_microseconds(any) :: any
   def http_check_duration_microseconds(time) do
     Logger.info(time)
-    Histogram.observe([name: :http_check_duration_milliseconds,
+    Histogram.observe([name: :http_check_duration_microseconds,
     labels: [:value]], time)
   end
 end

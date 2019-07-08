@@ -911,7 +911,7 @@
       "reverseYBuckets": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum(rate(http_check_duration_milliseconds_bucket[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(http_check_duration_microseconds_bucket[5m])) by (le))",
           "format": "heatmap",
           "hide": false,
           "instant": false,
@@ -923,7 +923,7 @@
           "step": 240
         },
         {
-          "expr": "histogram_quantile(0.99, sum(rate(http_check_duration_milliseconds_bucket[5m])) by (le))",
+          "expr": "histogram_quantile(0.99, sum(rate(http_check_duration_microseconds_bucket[5m])) by (le))",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -934,7 +934,7 @@
           "step": 240
         },
         {
-          "expr": "histogram_quantile(1, sum(rate(http_check_duration_milliseconds_bucket[5m])) by (le))",
+          "expr": "histogram_quantile(1, sum(rate(http_check_duration_microseconds_bucket[5m])) by (le))",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -947,7 +947,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "http_check_duration_milliseconds_bucket",
+      "title": "http_check_duration_microseconds_bucket",
       "tooltip": {
         "show": true,
         "showHistogram": false

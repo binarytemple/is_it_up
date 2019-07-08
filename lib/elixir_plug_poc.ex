@@ -92,7 +92,7 @@ end
 defmodule CheckInstrumenter do
   use Prometheus.Metric
   alias Prometheus.Metric.{Boolean, Counter, Gauge, Histogram, Summary}
-
+  require Logger
   @counter [
     name: :http_check_total,
     help: "counter incremeted for every http request upstream",
@@ -116,6 +116,7 @@ defmodule CheckInstrumenter do
 
   @spec http_check_duration_milliseconds(any) :: any
   def http_check_duration_milliseconds(time) do
+    Logger.info(time)
     Histogram.observe([name: :http_check_duration_milliseconds,
     labels: [:value]], time)
   end

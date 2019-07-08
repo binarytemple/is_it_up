@@ -57,21 +57,22 @@ defmodule HelloWorld.Timer do
   end
 
   def handle_info(:do_check, _state) do
-
-
     Process.send_after(self(), :do_check, check_interval())
     host = "http://#{check_host()}"
     CheckInstrumenter.http_check(host)
+    status= check_host(host)
+    {:noreply, %Timer{last_check: get_now(), status: status}}
+  end
 
+
+  def check_host(host) do
     fn_check = fn() ->
-    {time, %{status_code: x}} = :timer.tc(&HTTPoison.head!/1,[host])
-    CheckInstrumenter.http_check_duration_milliseconds(time)
-    x
-    end
-    t = Task.async(fn_check)
-    res = Task.await(t)
-
-    {:noreply, %Timer{last_check: get_now(), status: res}}
+      {time, %{status_code: x}} = :timer.tc(&HTTPoison.head!/1,[host])
+      CheckInstrumenter.http_check_duration_milliseconds(time)
+      x
+      end
+      t = Task.async(fn_check)
+      Task.await(t)
   end
 
   defp get_now() do

@@ -9,7 +9,7 @@ config :prometheus, MetricsPlugExporter,
   auth: false
 
 config :libcluster,
-  debug: true
+  debug: {:system, :boolean, "DEBUG_LIBCLUSTER", false}
 
 config :logger,
   level: :info,

@@ -4,6 +4,7 @@ defmodule IsItUp.App do
   def start(_type, _args) do
     Confex.resolve_env!(:logger)
     Logger.configure(Application.get_all_env(:logger))
+    Confex.resolve_env!(:libcluster)
     Confex.resolve_env!(:is_it_up)
     IsItUp.Metrics.PlugExporter.setup()
 

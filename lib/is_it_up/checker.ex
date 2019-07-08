@@ -67,9 +67,9 @@ defmodule IsItUp.Checker do
   def check_host(host) do
     fn_check = fn() ->
       {time, %{status_code: x}} = :timer.tc(&HTTPoison.head!/1,[host])
-      Instrumenter.http_check_duration_milliseconds(time)
+      Instrumenter.http_check_duration_microseconds(time)
       x
-      end
+    end
       t = Task.async(fn_check)
       Task.await(t)
   end

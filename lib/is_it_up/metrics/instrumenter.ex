@@ -25,7 +25,7 @@ defmodule IsItUp.Metrics.Instrumenter do
   end
 
   @spec http_check_duration_milliseconds(any) :: any
-  def http_check_duration_milliseconds(time) do
+  def http_check_duration_microseconds(time) do
     Logger.info(time)
     Histogram.observe([name: :http_check_duration_milliseconds,
     labels: [:value]], time)

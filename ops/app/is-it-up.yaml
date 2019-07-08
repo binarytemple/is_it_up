@@ -1,41 +1,41 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: elixir-plug-poc
+  name: is-it-up
   labels:
-    app: elixir-plug-poc
+    app: is-it-up
 spec:
   ports:
   - port: 4000
     name: web
   clusterIP: None
   selector:
-    app: elixir-plug-poc
+    app: is-it-up
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: elixir-plug-poc
+  name: is-it-up
 spec:
-  serviceName: "elixir-plug-poc"
+  serviceName: "is-it-up"
   replicas: 2
   updateStrategy:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: elixir-plug-poc
+      app: is-it-up
   template:
     metadata:
       labels:
-        app: elixir-plug-poc
+        app: is-it-up
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/path: '/metrics'
         prometheus.io/port: '4000'
     spec:
       containers:
-      - name: elixir-plug-poc
-        image: binarytemple/elixir_plug_poc
+      - name: is-it-up
+        image: binarytemple/is_it_up
         args:
           - foreground
         env:

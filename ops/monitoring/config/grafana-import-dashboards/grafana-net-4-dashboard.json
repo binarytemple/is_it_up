@@ -1043,7 +1043,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "/elixir-plug-poc-.*/",
+          "alias": "/is-it-up-.*/",
           "steppedLine": true
         }
       ],

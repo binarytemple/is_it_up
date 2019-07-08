@@ -1,7 +1,7 @@
-defmodule HelloWorld.Timer do
+defmodule IsItUp.Checker do
   require Logger
 
-  alias HelloWorld.Timer
+  alias IsItUp.Metrics.Instrumenter
 
   defstruct last_check: nil, status: nil
   @type t :: %__MODULE__{last_check: String.t(), status: non_neg_integer}
@@ -10,15 +10,15 @@ defmodule HelloWorld.Timer do
   use Timex
 
   defp check_init_delay() do
-    Application.get_env(:elixir_plug_poc, :check_init_delay) * 1000
+    Application.get_env(:is_it_up, :check_init_delay) * 1000
   end
 
   defp check_interval() do
-    Application.get_env(:elixir_plug_poc, :check_interval) * 1000
+    Application.get_env(:is_it_up, :check_interval) * 1000
   end
 
   defp check_host() do
-    Application.get_env(:elixir_plug_poc, :check_host)
+    Application.get_env(:is_it_up, :check_host)
   end
 
   @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
@@ -29,10 +29,10 @@ defmodule HelloWorld.Timer do
 
   @spec start_link :: :ignore | {:error, any} | {:ok, pid}
   def start_link do
-    GenServer.start_link(__MODULE__, %Timer{}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %__MODULE__{}, name: __MODULE__)
   end
 
-  @spec init(Timer.t()) :: {:ok, Timer.t()}
+  @spec init(__MODULE__.t()) :: {:ok, __MODULE__.t()}
   def init(state) do
     IO.puts("init")
     Process.send_after(self(), :do_check, check_init_delay())
@@ -50,8 +50,8 @@ defmodule HelloWorld.Timer do
     Logger.debug(inspect(state))
 
     case state do
-      %Timer{status: 200} -> {:reply, {:ok, true}, state}
-      %Timer{status: 301} -> {:reply, {:ok, true}, state}
+      %__MODULE__{status: 200} -> {:reply, {:ok, true}, state}
+      %__MODULE__{status: 301} -> {:reply, {:ok, true}, state}
       _ -> {:reply, {:ok, false}, state}
     end
   end
@@ -59,16 +59,15 @@ defmodule HelloWorld.Timer do
   def handle_info(:do_check, _state) do
     Process.send_after(self(), :do_check, check_interval())
     host = "http://#{check_host()}"
-    CheckInstrumenter.http_check(host)
+    Instrumenter.http_check(host)
     status= check_host(host)
-    {:noreply, %Timer{last_check: get_now(), status: status}}
+    {:noreply, %__MODULE__{last_check: get_now(), status: status}}
   end
-
 
   def check_host(host) do
     fn_check = fn() ->
       {time, %{status_code: x}} = :timer.tc(&HTTPoison.head!/1,[host])
-      CheckInstrumenter.http_check_duration_milliseconds(time)
+      Instrumenter.http_check_duration_milliseconds(time)
       x
       end
       t = Task.async(fn_check)

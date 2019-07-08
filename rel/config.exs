@@ -35,12 +35,12 @@ end
 # when running `mix distillery.release`, the first release in the file
 # will be used by default
 
-release :elixir_plug_poc do
-  set version: current_version(:elixir_plug_poc)
+release :is_it_up do
+  set version: current_version(:is_it_up)
   set applications: [
     :confex,
     :cowboy,
-    :elixir_plug_poc,
+    :is_it_up,
     :libcluster,
     :timex,
     :logger,

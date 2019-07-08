@@ -22,7 +22,7 @@ defmodule Cluster.Strategy.Kubernetes.DNSSRV do
             strategy: #{__MODULE__},
             config: [
               service: "elixir-plug-poc",
-              application_name: "elixir_plug_poc",
+              application_name: "is_it_up",
               polling_interval: 10_000]]]
 
   An example of how this strategy extracts topology information from DNS follows:
@@ -91,7 +91,7 @@ defmodule Cluster.Strategy.Kubernetes.DNSSRV do
       spec:
         containers:
         - name: elixir-plug-poc
-          image: binarytemple/elixir_plug_poc
+          image: binarytemple/is_it_up
           args:
             - foreground
           env:

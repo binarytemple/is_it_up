@@ -5,8 +5,8 @@ config :libcluster,
     k8s_example: [
       strategy: Cluster.Strategy.Kubernetes.DNSSRV,
       config: [
-        service: "elixir-plug-poc",
-        application_name: "elixir_plug_poc",
+        service: "is-it-up",
+        application_name: "is_it_up",
         namespace: "default",
         polling_interval: 10_000
       ]

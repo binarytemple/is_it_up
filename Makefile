@@ -33,6 +33,9 @@ backup-monitoring-secrets:
 	kubectl create namespace backup || true
 	kubectl get secret grafana --namespace=monitoring --export -o yaml | kubectl apply --namespace=backup -f -
 
+rerun-grafana-import-dashboards:
+	$(MAKE) -C $(shell pwd)/ops/monitoring/ rerun-grafana-import-dashboards
+
 restore-monitoring-secrets:
 	kubectl get secret grafana --namespace=backup --export -o yaml | kubectl apply --namespace=monitoring -f -
 

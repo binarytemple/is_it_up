@@ -21,7 +21,11 @@ defmodule IsItUp.App do
         type: :worker
       },
       {Cluster.Supervisor, [topologies, [name: ClusterSupervisor]]},
-      Plug.Cowboy.child_spec(scheme: :http, plug:  IsItUp.Plug.Pipeline, options: [port: http_port])
+      Plug.Cowboy.child_spec(
+        scheme: :http,
+        plug: IsItUp.Plug.Pipeline,
+        options: [port: http_port]
+      )
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)

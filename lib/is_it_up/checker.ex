@@ -60,18 +60,19 @@ defmodule IsItUp.Checker do
     Process.send_after(self(), :do_check, check_interval())
     host = "http://#{check_host()}"
     Instrumenter.http_check(host)
-    status= check_host(host)
+    status = check_host(host)
     {:noreply, %__MODULE__{last_check: get_now(), status: status}}
   end
 
   def check_host(host) do
-    fn_check = fn() ->
-      {time, %{status_code: x}} = :timer.tc(&HTTPoison.head!/1,[host])
-      Instrumenter.http_check_duration_milliseconds(time)
+    fn_check = fn ->
+      {time, %{status_code: x}} = :timer.tc(&HTTPoison.head!/1, [host])
+      Instrumenter.http_check_duration_microseconds(time, host)
       x
-      end
-      t = Task.async(fn_check)
-      Task.await(t)
+    end
+
+    t = Task.async(fn_check)
+    Task.await(t)
   end
 
   defp get_now() do

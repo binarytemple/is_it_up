@@ -1,4 +1,3 @@
-
 defmodule IsItUp.Plug.Root do
   import Plug.Conn
 

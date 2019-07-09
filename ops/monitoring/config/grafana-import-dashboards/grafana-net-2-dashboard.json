@@ -23,12 +23,6 @@
       "version": ""
     },
     {
-      "type": "panel",
-      "id": "heatmap",
-      "name": "Heatmap",
-      "version": ""
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
@@ -59,7 +53,7 @@
   "gnetId": 737,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1562597674883,
+  "iteration": 1562626706121,
   "links": [],
   "panels": [
     {
@@ -182,7 +176,7 @@
         "maxValue": 100,
         "minValue": 0,
         "show": true,
-        "thresholdLabels": false,
+        "thresholdLabels": true,
         "thresholdMarkers": true
       },
       "gridPos": {
@@ -226,12 +220,13 @@
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
-        "show": false
+        "show": true
       },
       "tableColumn": "",
       "targets": [
         {
           "expr": "sum(rate(container_cpu_usage_seconds_total{id=\"/\",instance=~\"^$instance$\"}[1m])) / sum (machine_cpu_cores{instance=~\"^$instance$\"}) * 100",
+          "format": "time_series",
           "interval": "10s",
           "intervalFactor": 1,
           "refId": "A",
@@ -880,61 +875,80 @@
       "valueName": "current"
     },
     {
-      "cards": {
-        "cardPadding": null,
-        "cardRound": null
-      },
-      "color": {
-        "cardColor": "#b4ff00",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateOranges",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "timeseries",
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
+      "fill": 1,
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 9
       },
-      "heatmap": {},
-      "hideZeroBuckets": false,
-      "highlightCards": true,
       "id": 32,
       "legend": {
-        "show": false
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
+      "lines": true,
+      "linewidth": 1,
       "links": [],
+      "nullPointMode": "null",
       "options": {},
-      "reverseYBuckets": false,
+      "percentage": false,
+      "pluginVersion": "6.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum(rate(http_check_duration_microseconds_bucket[5m])) by (le))",
+          "expr": "http_check_duration_gauge_microseconds",
           "format": "heatmap",
           "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "95",
+          "legendFormat": "val",
           "metric": "network",
           "refId": "A",
           "step": 240
         },
         {
-          "expr": "histogram_quantile(0.99, sum(rate(http_check_duration_microseconds_bucket[5m])) by (le))",
-          "format": "time_series",
-          "hide": true,
+          "expr": "histogram_quantile(0.90, sum(rate(http_check_duration_microseconds_bucket[1m])) by (le))",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "99",
+          "legendFormat": "val",
           "metric": "network",
           "refId": "B",
           "step": 240
         },
         {
-          "expr": "histogram_quantile(1, sum(rate(http_check_duration_microseconds_bucket[5m])) by (le))",
+          "expr": "increase(http_check_total[1m])",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "total checks",
+          "metric": "network",
+          "refId": "D",
+          "step": 240
+        },
+        {
+          "expr": "histogram_quantile(50, sum(rate(http_check_duration_microseconds_bucket[1m])) by (le))",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -945,31 +959,136 @@
           "step": 240
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "http_check_duration_microseconds_bucket",
+      "title": "http_check_duration (ms)",
       "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
         "show": true,
-        "showHistogram": false
+        "values": []
       },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 14
       },
-      "xBucketNumber": null,
-      "xBucketSize": null,
-      "yAxis": {
-        "decimals": null,
-        "format": "short",
-        "logBase": 1,
-        "max": null,
-        "min": null,
+      "id": 37,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
         "show": true,
-        "splitFactor": null
+        "total": false,
+        "values": false
       },
-      "yBucketBound": "auto",
-      "yBucketNumber": null,
-      "yBucketSize": null
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {},
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "http_check_duration_gauge_microseconds",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "metric": "network",
+          "refId": "B",
+          "step": 240
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "http_check_duration (guage) (ms)",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "ms",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "collapsed": false,
@@ -977,7 +1096,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 19
       },
       "id": 36,
       "panels": [],
@@ -999,7 +1118,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 20
       },
       "height": "",
       "id": 17,
@@ -1108,7 +1227,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 27
       },
       "id": 33,
       "isNew": true,
@@ -1209,7 +1328,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 34
       },
       "id": 16,
       "isNew": true,
@@ -1319,7 +1438,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 41
       },
       "id": 34,
       "isNew": true,
@@ -1461,7 +1580,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -1490,5 +1609,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes Pod Resources (Elixir)"
+  "title": "Kubernetes Pod Resources (Elixir)",
+  "uid": "PqgT_FSWz",
+  "version": 3
 }

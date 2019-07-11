@@ -38,6 +38,7 @@ defmodule IsItUp.Mixfile do
     [
       {:prometheus_ex, "~> 3.0"},
       {:prometheus_plugs, "~> 1.1.5"},
+      {:prometheus_process_collector, "~> 1.4"},
       {:confex, "~> 3.4.0"},
       {:distillery, "~> 2.1.1"},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},

@@ -2,7 +2,7 @@ FROM bitwalker/alpine-elixir:1.9.0
 
 RUN mix local.hex --force && mix local.rebar --force 
 
-RUN apk update && apk add curl vim
+RUN apk update && apk add curl make g++
 
 WORKDIR /otp/app
 

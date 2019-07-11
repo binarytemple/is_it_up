@@ -47,3 +47,11 @@ port-forward-grafana:
 
 port-forward-elixir:
 	kubectl port-forward --namespace elixir is-it-up-0 14000:4000
+
+kaniko-build:
+	docker run -ti --rm -v $(shell pwd):/workspace \
+		-v $(shell pwd)/config.json:/kaniko/.docker/.docker/config.json:ro \
+		gcr.io/kaniko-project/executor:latest \
+		--dockerfile=ops/Dockerfile \
+		--no-push \
+		--destination=docker.io/onlytestingdonotuse/test:latest

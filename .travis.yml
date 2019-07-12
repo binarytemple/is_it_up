@@ -8,4 +8,4 @@ env:
   - ERLANG_COOKIE=foo
 
 script:
-  - make kaniko-build
+  - make build

@@ -8,6 +8,7 @@ defmodule IsItUp.App do
     Confex.resolve_env!(:is_it_up)
     require Prometheus.Registry
     Prometheus.Registry.register_collector(:prometheus_process_collector)
+    
     IsItUp.Metrics.PlugExporter.setup()
 
     http_port = Application.get_env(:is_it_up, :http_port)

@@ -46,6 +46,8 @@ release :is_it_up do
     :logger,
     :plug_cowboy,
     :prometheus_ex,
+    :prometheus_process_collector,
+    :ex_bench,
     :runtime_tools,
   ]
 end

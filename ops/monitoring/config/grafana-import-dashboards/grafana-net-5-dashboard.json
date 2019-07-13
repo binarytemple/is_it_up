@@ -64,12 +64,13 @@
       "id": 2,
       "interval": "",
       "legend": {
-        "alignAsTable": false,
+        "alignAsTable": true,
         "avg": false,
         "current": false,
         "hideEmpty": false,
         "max": false,
         "min": false,
+        "rightSide": true,
         "show": true,
         "total": false,
         "values": false
@@ -94,12 +95,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(ex_bench_worker{command=\"processed_work\"}[1m]) ",
+          "expr": "rate(ex_bench_worker{command=\"processed_work\" }[1m]) ",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "processed",
+          "legendFormat": "processed {{kubernetes_pod_name}}",
           "refId": "B"
         },
         {
@@ -108,7 +109,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "allocated",
+          "legendFormat": "processed {{kubernetes_pod_name}}",
           "refId": "C"
         }
       ],
@@ -154,6 +155,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 18,
   "style": "dark",
   "tags": [],
@@ -161,8 +163,8 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
-    "to": "now"
+    "from": "2019-07-13T19:30:08.128Z",
+    "to": "2019-07-13T19:34:31.994Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -191,5 +193,5 @@
   },
   "timezone": "",
   "title": "ex_bench demo stats",
-  "version": 2
+  "version": 3
 }

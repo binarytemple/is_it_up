@@ -36,18 +36,20 @@ defmodule IsItUp.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:prometheus_ex, "~> 3.0"},
-      {:prometheus_plugs, "~> 1.1.5"},
-      {:prometheus_process_collector, "~> 1.4"},
       {:confex, "~> 3.4.0"},
       {:distillery, "~> 2.1.1"},
+      # {:ex_bench, "~> 0.2"},
+      {:ex_bench, git: "https://github.com/bryanhuntesl/ex_bench.git", branch: "0.2.4"},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:httpoison, "~> 1.5.1"},
       {:libcluster, "~> 3.1"},
       {:plug_cowboy, "~> 2.1.0"},
+      {:prometheus_ex, "~> 3.0"},
+      {:prometheus_plugs, "~> 1.1.5"},
+      {:prometheus_process_collector, "~> 1.4"},
       {:rexbug, "~> 1.0"},
+      {:telemetry, "~> 0.4.0"},
       {:timex, "~> 3.6"},
-      {:telemetry, "~> 0.4.0"}
     ]
   end
 end

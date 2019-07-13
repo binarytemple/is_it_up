@@ -38,8 +38,8 @@ defmodule IsItUp.Mixfile do
     [
       {:confex, "~> 3.4.0"},
       {:distillery, "~> 2.1.1"},
-      # {:ex_bench, "~> 0.2"},
-      {:ex_bench, git: "https://github.com/bryanhuntesl/ex_bench.git", branch: "0.2.4", runtime: false},
+      {:ex_bench, "~> 0.2.4"},
+      #{:ex_bench, git: "https://github.com/bryanhuntesl/ex_bench.git", branch: "0.2.4", runtime: false},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:httpoison, "~> 1.5.1"},
       {:libcluster, "~> 3.1"},

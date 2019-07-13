@@ -1,6 +1,9 @@
 attach-app-0:
 	kubectl -n elixir exec -t -i is-it-up-0 -- bin/is_it_up remote_console
 
+attach-app-1:
+	kubectl -n elixir exec -t -i is-it-up-1 -- bin/is_it_up remote_console
+
 mix-run-0:
 	HTTP_PORT=4000 iex --cookie foo --name a@127.0.0.1 -S mix
 

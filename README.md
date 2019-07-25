@@ -6,7 +6,14 @@ A testbed for deploying and monitoring clustered Elixir applications in Kubernet
 
 ## ex_bench supported
 
-This project builds with ex_bench support
+This project builds with [ex_bench](https://github.com/bryanhuntesl/ex_bench/) support
+
+## todo 
+
+* Servers to poll stored in database rather than single hard coded target (google.com)
+* Add [eflame dependency](https://github.com/esl/eflame) to identify process bottlenecks
+* Build using Erlang 22 with https://hub.docker.com/r/bryanhuntesl/alpine-erlang and [S.L. Fritchie eflame patch](https://github.com/bryanhuntesl/alpine-erlang/blob/experiment/slfritchie-eflame-enhancements/patches/slfritchie-eflame.patch)
+
 
 ## running
 

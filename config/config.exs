@@ -13,8 +13,8 @@ config :libcluster,
 
 config :logger,
   level: :info,
-  handle_otp_reports: {:system, :boolean, "LAGER_HANDLE_OTP_REPORTS", false},
-  handle_sasl_reports: {:system, :boolean, "LAGER_HANDLE_SASL_REPORTS", false}
+  handle_otp_reports: {:system, :boolean, "LOGGER_HANDLE_OTP_REPORTS", false},
+  handle_sasl_reports: {:system, :boolean, "LOGGER_HANDLE_SASL_REPORTS", false}
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

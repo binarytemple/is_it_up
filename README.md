@@ -1,160 +1,38 @@
-# ElixirPlugPoc
+[![CI status](https://travis-ci.org/bryanhuntesl/ex_bench.svg?branch=master)](https://travis-ci.org/bryanhuntesl/ex_bench)
 
-This project started as a demo project for a talk at wework shoreditch in 2016 demonstrating CI/CD in Elxir with docker. 
+# is_it_up
 
-It is now a testbed for deploying and monitoring clustered Elixir applications in Kubernetes - with Prometheus monitoring and Grafan metric display.
+A testbed for deploying and monitoring clustered Elixir applications in Kubernetes - with Prometheus monitoring and Grafan metric display.
 
-## Running under docker (downloading from docker hub)
+## ex_bench supported
 
-```
-docker run -p 4000:4000 binarytemple/is_it_up:<version>
-```
+This project builds with ex_bench support
 
-## Running under docker (build it locally)
+## running
 
-```
-docker build -t whatever .
-docker run whatever
-```
+See the Makefile for all available tasks - the tasks are currently : 
 
+| Command                            | Description                                                                                                                               |
+| ---------------------------------- | -----------                                                                                                                               |
+| `attach-app-0`                     | attach to first instance of app running in stateful set                                                                                   |
+| `attach-app-1`                     | attach to second instance of app running in stateful set                                                                                  |
+| `backup-monitoring-secrets`        | backup the monitoring secrets to namespace `backup`                                                                                       |
+| `build`                            | build the application into a docker image                                                                                                 |
+| `deploy-app`                       | deploy the application to k8s namespace `elixir`                                                                                          |
+| `deploy-monitoring`                | deploy the monitoring tools (prometheus/grafana) to namespace `monitoring`                                                                |
+| `docker-run`                       | run single instance of the image in docker (no kubenetes involved)                                                                        |
+| `kaniko-build`                     | build the docker image using kaniko (rootless, runs as a kubernetes job)                                                                  |
+| `mix-run-0`                        | run instance 0 of the application using iex/mix (dev mode, libcluster hard coded 2 nodes)                                                 |
+| `mix-run-1`                        | run instance 1 of the application using iex/mix (dev mode, libcluster hard coded 2 nodes)                                                 |
+| `port-forward-elixir`              | port forward the first elixir container to localhost (14000) so you can access via http                                                   |
+| `port-forward-grafana`             | port forward the grafana container to localhost (3000) so you can access via http                                                         |
+| `port-forward-prometheus`          | port forward the prometheus container to localhost (9090) so you can access via http                                                      |
+| `push`                             | push the project to docker hub                                                                                                            |
+| `rerun-grafana-import-dashboards`  | tweaking grafana dashboards, export via gui, copy to ops/monitoring/config/grafana-import-dashboards and run to verify import still works |
+| `restore-monitoring-secrets`       | destroyed the monitoring namespace, use this to avoid having to re-enter the required secrets                                                                                                                                           |
+| `undeploy-app`                     | destroy the elixir namespace                                                                                                                                           |
+| `undeploy-monitoring`              | destroy the monitoring namespace                                                                                                                                           |
 
-## Running under Kubernetes.
-
-This is where it gets fancy, this will serve as a handly starting point for distributed Erlang under Kubernetes.
-
-The file `k8s/deploy/is-it-up.yaml` describes a kubernetes statefulset and service.
-
-When the file is applied to your kubernetes cluster, two pods will be created - with hostnames corresponding to the FQDN of the nodes.
-
-```
-kubectl apply -f k8s/is-it-up.yaml
-```
-
-```
-kubectl exec -t -i is-it-up-0 /bin/bash
-```
-
-```
-bash-4.4# hostname -f
-is-it-up-0.is-it-up.default.svc.cluster.local
-```
-
-You can discover the other node names using a SRV or wildcard query after removing the first dot from the hostname i.e.
-
-```
-bash-4.4# dig *.is-it-up.default.svc.cluster.local
-
-; <<>> DiG 9.12.4-P2 <<>> *.is-it-up.default.svc.cluster.local
-;; global options: +cmd
-;; Got answer:
-;; WARNING: .local is reserved for Multicast DNS
-;; You are currently testing what happens when an mDNS query is leaked to DNS
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 34261
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 0
-
-;; QUESTION SECTION:
-;*.is-it-up.default.svc.cluster.local. IN        A
-
-;; ANSWER SECTION:
-*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.55
-*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.57
-*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.59
-*.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.60
-
-;; Query time: 0 msec
-;; SERVER: 10.96.0.10#53(10.96.0.10)
-;; WHEN: Mon Jul 01 14:10:16 UTC 2019
-;; MSG SIZE  rcvd: 125
-```
-
-Or SRV query :
-
-```
-bash-4.4# dig SRV is-it-up.default.svc.cluster.local
-
-; <<>> DiG 9.12.4-P2 <<>> SRV is-it-up.default.svc.cluster.local
-;; global options: +cmd
-;; Got answer:
-;; WARNING: .local is reserved for Multicast DNS
-;; You are currently testing what happens when an mDNS query is leaked to DNS
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 50739
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 4
-
-;; QUESTION SECTION:
-;is-it-up.default.svc.cluster.local. IN SRV
-
-;; ANSWER SECTION:
-is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-3.is-it-up.default.svc.cluster.local.
-is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-0.is-it-up.default.svc.cluster.local.
-is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-1.is-it-up.default.svc.cluster.local.
-is-it-up.default.svc.cluster.local. 30 IN SRV 10 25 0 is-it-up-2.is-it-up.default.svc.cluster.local.
-
-;; ADDITIONAL SECTION:
-is-it-up-3.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.60
-is-it-up-0.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.55
-is-it-up-1.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.57
-is-it-up-2.is-it-up.default.svc.cluster.local. 30 IN A 10.1.0.59
-
-;; Query time: 0 msec
-;; SERVER: 10.96.0.10#53(10.96.0.10)
-;; WHEN: Mon Jul 01 14:11:32 UTC 2019
-;; MSG SIZE  rcvd: 275
-```
-
-
-
-Lets attach to the running Elixir application inside the container :
-
-```
-bin/is_it_up remote_console
-```
-
-
-And verify `:inet_res.nslookup` is working correctly :
-
-```
-iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)32> :inet_res.nslookup('is-it-up.default.svc.cluster.
-local', :any, :srv)
-{:ok,
- {:dns_rec, {:dns_header, 1, true, :query, true, false, true, true, false, 0},
-  [{:dns_query, 'is-it-up.default.svc.cluster.local', :srv, :any}],
-  [
-    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'is-it-up-0.is-it-up.default.svc.cluster.local'},
-     :undefined, [], false},
-    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'is-it-up-1.is-it-up.default.svc.cluster.local'},
-     :undefined, [], false},
-    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'is-it-up-2.is-it-up.default.svc.cluster.local'},
-     :undefined, [], false},
-    {:dns_rr, 'is-it-up.default.svc.cluster.local', :srv, :in, 0, 30,
-     {10, 25, 0, 'is-it-up-3.is-it-up.default.svc.cluster.local'},
-     :undefined, [], false}
-  ], [],
-  [
-    {:dns_rr, 'is-it-up-0.is-it-up.default.svc.cluster.local', :a,
-     :in, 0, 30, {10, 1, 0, 55}, :undefined, [], false},
-    {:dns_rr, 'is-it-up-1.is-it-up.default.svc.cluster.local', :a,
-     :in, 0, 30, {10, 1, 0, 57}, :undefined, [], false},
-    {:dns_rr, 'is-it-up-2.is-it-up.default.svc.cluster.local', :a,
-     :in, 0, 30, {10, 1, 0, 59}, :undefined, [], false},
-    {:dns_rr, 'is-it-up-3.is-it-up.default.svc.cluster.local', :a,
-     :in, 0, 30, {10, 1, 0, 60}, :undefined, [], false}
-  ]}}
-```
-
-
-Verify distributed Erlang working correctly:
-
-    iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)11> Node.connect(:'is_it_up@is-it-up-1.is-it-up.default.svc.cluster.local')
-    true
-
-    iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)20> Node.list
-    [:"is_it_up@is-it-up-1.is-it-up.default.svc.cluster.local"]
-
-    iex(is_it_up@is-it-up-0.is-it-up.default.svc.cluster.local)25> Node.ping(:"is_it_up@is-it-up-1.is-it-up.default.svc.cluster.local")
-    :pong
 
 
 

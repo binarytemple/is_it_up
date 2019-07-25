@@ -2,7 +2,7 @@
 
 # is_it_up
 
-A testbed for deploying and monitoring clustered Elixir applications in Kubernetes - with Prometheus monitoring and Grafan metric display.
+A testbed for deploying and monitoring clustered Elixir applications in Kubernetes - with Prometheus monitoring and Grafana metrics display.
 
 ## ex_bench supported
 

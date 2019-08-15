@@ -3,7 +3,7 @@ defmodule IsItUp.Plug.Root do
 
   alias IsItUp.Checker
 
-  @spec init(map) :: %{my_prefix: <<_::40>>}
+  @spec init(map) :: %{my_prefix: String.t}
   def init(opts) do
     Map.put(opts, :my_prefix, "Hello")
   end

@@ -43,7 +43,7 @@ spec:
             cpu: 100m
         env:
           - name: ELASTICSEARCH_HOSTS
-            value: http://elasticsearch-logging:9200
+            value: http://elasticsearch.kube-logging.svc.cluster.local:9200
           - name: SERVER_NAME
             value: kibana-logging
           - name: SERVER_BASEPATH

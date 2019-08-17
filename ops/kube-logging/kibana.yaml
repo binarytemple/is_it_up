@@ -46,8 +46,8 @@ spec:
             value: http://elasticsearch.kube-logging.svc.cluster.local:9200
           - name: SERVER_NAME
             value: kibana
-          - name: SERVER_BASEPATH
-            value: /api/v1/namespaces/kube-system/services/kibana/proxy
+            #- name: SERVER_BASEPATH
+            #- value: /api/v1/namespaces/kube-system/services/kibana/proxy
           - name: SERVER_REWRITEBASEPATH
             value: "false"
         ports:

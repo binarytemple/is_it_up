@@ -5,7 +5,7 @@ metadata:
   namespace: kube-logging
 spec:
   serviceName: elasticsearch
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: elasticsearch
@@ -66,7 +66,7 @@ spec:
           privileged: true
   volumeClaimTemplates:
   - metadata:
-      name: debug
+      name: data
     spec:
       accessModes: [ "ReadWriteMany" ]
       resources:

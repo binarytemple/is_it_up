@@ -15,25 +15,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kibana-logging
-  namespace: kube-system
+  name: kibana
+  namespace: kube-logging
   labels:
-    k8s-app: kibana-logging
+    k8s-app: kibana
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: kibana-logging
+      k8s-app: kibana
   template:
     metadata:
       labels:
-        k8s-app: kibana-logging
+        k8s-app: kibana
       annotations:
         seccomp.security.alpha.kubernetes.io/pod: 'docker/default'
     spec:
       containers:
-      - name: kibana-logging
+      - name: kibana
         image: docker.elastic.co/kibana/kibana-oss:7.2.0
         resources:
           # need more cpu upon initialization, therefore burstable class
@@ -45,9 +45,9 @@ spec:
           - name: ELASTICSEARCH_HOSTS
             value: http://elasticsearch.kube-logging.svc.cluster.local:9200
           - name: SERVER_NAME
-            value: kibana-logging
+            value: kibana
           - name: SERVER_BASEPATH
-            value: /api/v1/namespaces/kube-system/services/kibana-logging/proxy
+            value: /api/v1/namespaces/kube-system/services/kibana/proxy
           - name: SERVER_REWRITEBASEPATH
             value: "false"
         ports:

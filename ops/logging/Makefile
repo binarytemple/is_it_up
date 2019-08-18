@@ -19,6 +19,13 @@ fluentd:
 deploy-counter-example: namespace
 	kubectl apply --force -f $(shell pwd)/counter.yaml
 
+undeploy-counter-example: namespace
+	kubectl delete -f $(shell pwd)/counter.yaml
+
+
+
+
+
 deploy: kibana
 
 undeploy-logging:

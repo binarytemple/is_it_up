@@ -35,6 +35,9 @@ undeploy-monitoring:
 deploy-counter-example:
 	$(MAKE) -C $(shell pwd)/ops/logging/ deploy-counter-example
 
+undeploy-counter-example:
+	$(MAKE) -C $(shell pwd)/ops/logging/ undeploy-counter-example
+
 deploy-logging:
 	$(MAKE) -C $(shell pwd)/ops/logging/ deploy
 

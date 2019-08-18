@@ -60,6 +60,9 @@ port-forward-grafana:
 port-forward-elixir:
 	kubectl port-forward --namespace elixir is-it-up-0 14000:4000
 
+port-forward-kibana:
+	$(MAKE) -C $(shell pwd)/ops/logging/ port-forward-kibana
+
 kaniko-build:
 	docker run -ti --rm -v $(shell pwd):/workspace \
 		-v $${HOME}/.buildsecrets/irishjava.json:/kaniko/.docker/.docker/config.json:ro \

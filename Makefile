@@ -32,6 +32,15 @@ deploy-monitoring:
 undeploy-monitoring:
 	$(MAKE) -C $(shell pwd)/ops/monitoring/ undeploy-monitoring
 
+deploy-counter-example:
+	$(MAKE) -C $(shell pwd)/ops/logging/ deploy-counter-example
+
+deploy-logging:
+	$(MAKE) -C $(shell pwd)/ops/logging/ deploy
+
+undeploy-logging:
+	$(MAKE) -C $(shell pwd)/ops/logging/ undeploy-logging
+
 backup-monitoring-secrets:
 	kubectl create namespace backup || true
 	kubectl get secret grafana --namespace=monitoring --export -o yaml | kubectl apply --namespace=backup -f -

@@ -16,7 +16,7 @@ kibana: elasticsearch fluentd
 fluentd:
 	kubectl apply --force -f $(shell pwd)/fluentd.yaml
 
-deploy-counter-example:
+deploy-counter-example: namespace
 	kubectl apply --force -f $(shell pwd)/counter.yaml
 
 deploy: kibana

@@ -19,7 +19,3 @@ spec:
         - name: count
           image: busybox
           args: [/bin/sh, -c, 'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done']
-      - name: nginx
-        image: nginx:1.7.9
-        ports:
-        - containerPort: 80

@@ -1,6 +1,8 @@
-
 namespace:
 	kubectl apply --force -f $(shell pwd)/namespace.yaml
+
+testing-namespace:
+	kubectl apply --force -f $(shell pwd)/testing-namespace.yaml
 
 volume:
 	kubectl apply --force -f $(shell pwd)/volume.yaml
@@ -16,15 +18,14 @@ kibana: elasticsearch fluentd
 fluentd:
 	kubectl apply --force -f $(shell pwd)/fluentd.yaml
 
-deploy-counter-example: namespace
+deploy-counter-example: testing-namespace
 	kubectl apply --force -f $(shell pwd)/counter.yaml
 
-undeploy-counter-example: namespace
-	kubectl delete -f $(shell pwd)/counter.yaml
+scale-counter-example: deploy-counter-example
+	kubectl --namespace testing-kube-logging scale deployment --replicas 10 log-testing-counter
 
-
-
-
+undeploy-counter-example:
+	 kubectl delete namespace testing-kube-logging 
 
 deploy: kibana
 

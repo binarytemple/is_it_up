@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: counter
+  name: log-testing-counter
   namespace: testing-kube-logging
   labels:
-    app: nginx
+    app: log-testing-counter
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: counter
+      app: log-testing-counter
   template:
     metadata:
       labels:
-        app: counter
+        app: log-testing-counter
     spec:
       containers:
-        - name: count
+        - name: counter
           image: busybox
           args: [/bin/sh, -c, 'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done']

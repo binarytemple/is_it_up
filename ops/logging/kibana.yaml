@@ -37,10 +37,10 @@ spec:
         image: docker.elastic.co/kibana/kibana-oss:7.3.2
         resources:
           # need more cpu upon initialization, therefore burstable class
-          limits:
-            cpu: 1000m
-          requests:
-            cpu: 100m
+          # limits:
+          #   cpu: 1000m
+          # requests:
+          #   cpu: 100m
         env:
           - name: ELASTICSEARCH_HOSTS
             value: http://elasticsearch.kube-logging.svc.cluster.local:9200

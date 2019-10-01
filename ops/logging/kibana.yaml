@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana-oss:7.2.0
+        image: docker.elastic.co/kibana/kibana-oss:7.3.2
         resources:
           # need more cpu upon initialization, therefore burstable class
           limits:

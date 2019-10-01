@@ -44,6 +44,8 @@ spec:
         env:
           - name: ELASTICSEARCH_HOSTS
             value: http://elasticsearch.kube-logging.svc.cluster.local:9200
+          - name: LOGGING_VERBOSE
+            value: "true"
           - name: SERVER_NAME
             value: kibana
             #- name: SERVER_BASEPATH

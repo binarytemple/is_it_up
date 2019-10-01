@@ -4,12 +4,12 @@ metadata:
   name: kibana
   namespace: kube-logging
   labels:
-    app: kibana
+    k8s-app: kibana
 spec:
   ports:
   - port: 5601
   selector:
-    app: kibana
+    k8s-app: kibana
 
 ---
 apiVersion: apps/v1
@@ -24,11 +24,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kibana
+      k8s-app: kibana
   template:
     metadata:
       labels:
-        app: kibana
+        k8s-app: kibana
       annotations:
         seccomp.security.alpha.kubernetes.io/pod: 'docker/default'
     spec:

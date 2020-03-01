@@ -17,7 +17,7 @@ This project builds with [ex_bench](https://github.com/bryanhuntesl/ex_bench/) s
 
 ## running
 
-See the Makefile for all available tasks - the tasks are currently : 
+See the Makefile for all available tasks - the tasks are currently :
 
 | Command                            | Description                                                                                                                   |
 | ---------------------------------- | -----------                                                                                                                   |
@@ -42,3 +42,53 @@ See the Makefile for all available tasks - the tasks are currently :
 | `deploy-logging`                   | deploy elasticsearch, fluentd, kibana                                                                                         |
 | `undeploy-logging`                 | undeploy elasticsearch, fluentd, kibana                                                                                       |
 | `deploy-counter-example`           | deploy a pod which outputs an incrementing counter to stdout (picked up by fluentd, sent to elasticsearch, viewable in kibana |
+
+
+## Publicly exposing services (Ingress)
+
+This project has not been made to by default expose services directly to the internet - if you want to do so - you can execute one of the following commands in order to expose the 'is-it-up' service.
+
+
+### Direct TCP access
+
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: is-it-up-ingress
+  namespace: elixir
+spec:
+  backend:
+    serviceName:  is-it-up
+    servicePort: 4000
+EOF
+```
+
+### HTTP proxying, restricted by path 
+
+```
+cat <<EOF | kubectl apply -f -
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: simple-fanout-example
+  namespace: elixir
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host:
+    http:
+      paths:
+      - path: /metrics
+        backend:
+          serviceName: is-it-up
+          servicePort: 4000
+      - path: /google_status
+        backend:
+          serviceName: is-it-up
+          servicePort: 4000
+EOF
+```

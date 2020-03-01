@@ -12,8 +12,8 @@ spec:
     type: ''
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
+#  persistentVolumeReclaimPolicy: Retain
+#  volumeMode: Filesystem
 ---
 apiVersion: v1
 kind: Service
@@ -74,7 +74,7 @@ spec:
   - metadata:
       name: debug
     spec:
-      accessModes: [ "ReadWriteMany" ]
+      accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
           storage: 200m

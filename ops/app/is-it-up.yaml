@@ -25,7 +25,7 @@ spec:
   ports:
   - port: 4000
     name: web
-  clusterIP: None
+  type:  NodePort
   selector:
     app: is-it-up
 ---

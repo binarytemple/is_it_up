@@ -49,7 +49,7 @@ See the Makefile for all available tasks - the tasks are currently :
 This project has not been made to by default expose services directly to the internet - if you want to do so - you can execute one of the following commands in order to expose the 'is-it-up' service.
 
 
-### Direct TCP access
+### Direct TCP access
 
 ```
 cat <<EOF | kubectl apply -f -
@@ -65,7 +65,7 @@ spec:
 EOF
 ```
 
-### HTTP proxying, restricted by path 
+### HTTP proxying - restricted to two paths
 
 ```
 cat <<EOF | kubectl apply -f -
@@ -92,3 +92,27 @@ spec:
           servicePort: 4000
 EOF
 ```
+
+### Expose grafana
+
+```
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  name: grafana-ingress
+#  namespace: monitoring
+#spec:
+#  rules:
+#  - http:
+#      paths:
+#      - backend:
+#          serviceName: grafana
+#          servicePort: 3000
+#EOF
+```
+Doesn't work - see the following for more info : 
+* https://github.com/kubernetes/kubernetes/issues/20555
+* https://github.com/kubernetes/ingress-gce/pull/1010#issuecomment-593706666
+
+
+

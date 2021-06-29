@@ -1,13 +1,21 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: counter
-  namespace: kube-logging
-
+  name: log-testing-counter
+  namespace: testing-kube-logging
+  labels:
+    app: log-testing-counter
 spec:
-  containers:
-  - name: count
-    image: busybox
-    args: [/bin/sh, -c, 'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done']
-
-
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-testing-counter
+  template:
+    metadata:
+      labels:
+        app: log-testing-counter
+    spec:
+      containers:
+        - name: counter
+          image: busybox
+          args: [/bin/sh, -c, 'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done']

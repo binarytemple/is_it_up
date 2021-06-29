@@ -4,12 +4,12 @@ metadata:
   name: kibana
   namespace: kube-logging
   labels:
-    app: kibana
+    k8s-app: kibana
 spec:
   ports:
   - port: 5601
   selector:
-    app: kibana
+    k8s-app: kibana
 
 ---
 apiVersion: apps/v1
@@ -24,26 +24,28 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kibana
+      k8s-app: kibana
   template:
     metadata:
       labels:
-        app: kibana
+        k8s-app: kibana
       annotations:
         seccomp.security.alpha.kubernetes.io/pod: 'docker/default'
     spec:
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana-oss:7.2.0
+        image: docker.elastic.co/kibana/kibana-oss:7.3.2
         resources:
           # need more cpu upon initialization, therefore burstable class
-          limits:
-            cpu: 1000m
-          requests:
-            cpu: 100m
+          # limits:
+          #   cpu: 1000m
+          # requests:
+          #   cpu: 100m
         env:
           - name: ELASTICSEARCH_HOSTS
             value: http://elasticsearch.kube-logging.svc.cluster.local:9200
+          - name: LOGGING_VERBOSE
+            value: "true"
           - name: SERVER_NAME
             value: kibana
             #- name: SERVER_BASEPATH
@@ -54,15 +56,15 @@ spec:
         - containerPort: 5601
           name: ui
           protocol: TCP
-        livenessProbe:
-          httpGet:
-            path: /api/status
-            port: ui
-          initialDelaySeconds: 5
-          timeoutSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /api/status
-            port: ui
-          initialDelaySeconds: 5
-          timeoutSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /api/status
+        #     port: ui
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 60
+        # readinessProbe:
+        #   httpGet:
+        #     path: /api/status
+        #     port: ui
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 60
